@@ -1,0 +1,11 @@
+*** Settings ***
+Resource                通用.txt
+Resource                卡券信息.txt
+Resource                商城信息.txt
+Resource                移动端信息.txt
+Resource                接口请求.txt
+Resource                选择环境.txt
+Resource                ${测试环境}/环境_账户.txt
+Resource                ${测试环境}/数据库.txt
+Resource                ${测试环境}/接口地址.txt
+Resource                ${测试环境}/设备端信息.txt

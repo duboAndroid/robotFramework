@@ -1,0 +1,271 @@
+*** Settings ***
+Resource          0-设备端-http.txt
+
+*** Keywords ***
+会员卡支付短信码
+    [Arguments]    ${mobile}    ${orderId}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_card_pay_sms_code
+    修改Json格式的请求Body    /mobile    "${mobile}"
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+使用优惠
+    [Arguments]    ${amount}    ${qrCode}    ${undiscountableAmount}=0
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_cardpay_verify
+    修改Json格式的请求Body    /amount    ${amount}
+    修改Json格式的请求Body    /qrCode    "${qrCode}"
+    修改Json格式的请求Body    /undiscountableAmount    ${undiscountableAmount}
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+使用优惠-获取优惠信息
+    ${cardName}    Get Json Value    ${G_RESPONSE_BODY}    /cardName
+    ${cardName}    Replace String    ${cardName}    "    ${EMPTY}
+    ${cardType}    Get Json Value    ${G_RESPONSE_BODY}    /cardType
+    ${cardType}    Replace String    ${cardType}    "    ${EMPTY}
+    ${customerId}    Get Json Value    ${G_RESPONSE_BODY}    /customerId
+    ${discount}    Get Json Value    ${G_RESPONSE_BODY}    /discount
+    [Return]    ${cardName}    ${cardType}    ${customerId}    ${discount}
+
+储值卡手机号支付
+    [Arguments]    ${memberVerifyType}    ${mobile}    ${orderId}    ${password}    ${payTriggerType}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_card_pay_mobile
+    修改Json格式的请求Body    /memberVerifyType    ${memberVerifyType}
+    修改Json格式的请求Body    /mobile    "${mobile}"
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    修改Json格式的请求Body    /password    "${password}"
+    修改Json格式的请求Body    /payTriggerType    ${payTriggerType}
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+储值卡提供二维码支付
+    [Arguments]    ${orderId}    ${payTriggerType}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_card_pay_qrcode
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    修改Json格式的请求Body    /payTriggerType    ${payTriggerType}
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+储值卡短信验证码支付
+    [Arguments]    ${memberVerifyType}    ${mobile}    ${orderId}    ${payTriggerType}    ${validationCode}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_card_pay_sms_code
+    修改Json格式的请求Body    /memberVerifyType    ${memberVerifyType}
+    修改Json格式的请求Body    /mobile    "${mobile}"
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    修改Json格式的请求Body    /payTriggerType    ${payTriggerType}
+    修改Json格式的请求Body    /validationCode    "${validationCode}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+发起现金支付订单
+    [Arguments]    ${orderId}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_cash
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+微信二维码收款
+    [Arguments]    ${authCode}    ${orderId}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_wxpay_qrcode
+    修改Json格式的请求Body    /authCode    "${authCode}"
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+微信扫码支付
+    [Arguments]    ${authCode}    ${orderId}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_wxpay_scan
+    修改Json格式的请求Body    /authCode    "${authCode}"
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+支付宝扫码支付
+    [Arguments]    ${authCode}    ${orderId}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_alipay_scan
+    修改Json格式的请求Body    /authCode    "${authCode}"
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+收款统计
+    [Arguments]    ${version}=1.0
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_order_statics
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /version    "${version}"
+    发送请求
+    验证请求响应状态
+
+查询订单
+    [Arguments]    ${beginDate}    ${endDate}    ${maxAmount}    ${minAmount}    ${operatorId}    ${orderId}
+    ...    ${page}    ${payType}    ${print}    ${status}    ${version}=1.0
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_query_order
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /beginDate    ${beginDate}
+    修改Json格式的请求Body    /endDate    ${endDate}
+    修改Json格式的请求Body    /maxAmount    ${maxAmount}
+    修改Json格式的请求Body    /minAmount    ${minAmount}
+    修改Json格式的请求Body    /operatorId    ${operatorId}
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    修改Json格式的请求Body    /page    ${page}
+    修改Json格式的请求Body    /payType    ${payType}
+    修改Json格式的请求Body    /print    ${print}
+    修改Json格式的请求Body    /status    ${status}
+    修改Json格式的请求Body    /version    "${version}"
+    发送请求
+    验证请求响应状态
+
+现金付款-使用优惠
+    [Arguments]    ${amount}    ${qrCode}    ${undiscountableAmount}=0
+    使用优惠    ${amount}    ${qrCode}
+    通用结果验证
+    ${cardName}    ${cardType}    ${customerId}    ${discount}    使用优惠-获取优惠信息
+    生成使用优惠订单    ${amount}    ${cardName}    ${cardType}    ${customerId}    ${discount}    2
+    通用结果验证
+    ${orderId}    生成使用优惠订单-获取30单号
+    确认现金    ${orderId}
+    通用结果验证
+
+生成使用优惠订单
+    [Arguments]    ${amount}    ${cardName}    ${cardType}    ${customerId}    ${discount}    ${orderType}
+    ...    ${undiscountableAmount}=0    ${cashAccount}=0    ${cardNum}=0
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_porder_gen_discount
+    修改Json格式的请求Body    /amount    ${amount}
+    修改Json格式的请求Body    /cardName    "${cardName}"
+    修改Json格式的请求Body    /cardNum    ${cardNum}
+    修改Json格式的请求Body    /cardType    "${cardType}"
+    修改Json格式的请求Body    /cashAccount    ${cashAccount}
+    修改Json格式的请求Body    /customerId    ${customerId}
+    修改Json格式的请求Body    /discount    ${discount}
+    修改Json格式的请求Body    /orderType    ${orderType}
+    修改Json格式的请求Body    /undiscountableAmount    ${undiscountableAmount}
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+    ${body}    Get Response Body
+    ${order_id}    Get Json Value    ${body}    /orderId
+    [Return]    ${order_id}
+
+生成使用优惠订单-获取30单号
+    ${orderId}    Get Json Value    ${G_RESPONSE_BODY}    /orderId
+    ${orderId}    Replace String    ${orderId}    "    ${EMPTY}
+    [Return]    ${orderId}
+
+生成订单
+    [Arguments]    ${amount}    ${undiscountableAmount}=0    ${cashAccount}=0    ${customerId}=0    ${discount}=0    ${orderType}=2
+    ...    ${cardNum}=0
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_porder_gen
+    修改Json格式的请求Body    /amount    ${amount}
+    修改Json格式的请求Body    /cardNum    ${cardNum}
+    修改Json格式的请求Body    /cashAccount    ${cashAccount}
+    修改Json格式的请求Body    /customerId    ${customerId}
+    修改Json格式的请求Body    /discount    ${discount}
+    修改Json格式的请求Body    /orderType    ${orderType}
+    修改Json格式的请求Body    /undiscountableAmount    ${undiscountableAmount}
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+生成订单-获取订单ID
+    ${order_id}    Get Json Value    ${G_RESPONSE_BODY}    /orderId
+    ${ret_order_id}    Replace String    ${order_id}    "    ${EMPTY}
+    [Return]    ${ret_order_id}
+
+确认现金
+    [Arguments]    ${orderId}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_confirm_cash
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+获取交易明细
+    [Arguments]    ${page}    ${status}    ${version}=1.0
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_order_list
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /page    ${page}
+    修改Json格式的请求Body    /status    ${status}
+    修改Json格式的请求Body    /version    "${version}"
+    发送请求
+    验证请求响应状态
+
+获取操作员列表
+    [Arguments]    ${page}    ${status}    ${version}=1.0
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_operators_list
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+轮询订单状态
+    [Arguments]    ${accurate}=0    ${version}=1
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_poll_query
+    修改Json格式的请求Body    /accurate    ${accurate}
+    修改Json格式的请求Body    /version    ${version}
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+轮询远端扫码支付结果
+    [Arguments]    ${orderId}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_query_order
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+退款
+    [Arguments]    ${superPass}    ${tradeOrderId}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_refund
+    修改Json格式的请求Body    /superPass    "${superPass}"
+    修改Json格式的请求Body    /tradeOrderId    "${tradeOrderId}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+银联刷卡
+    [Arguments]    ${detectCardType}    ${orderId}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_union_pay
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /detectCardType    ${detectCardType}
+    修改Json格式的请求Body    /orderId    "${orderId}"
+    发送请求
+    验证请求响应状态
+
+验证会员手机号
+    [Arguments]    ${code}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_收银台    index_customer_query
+    修改Json格式的请求Body    /code    "${code}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态

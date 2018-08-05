@@ -1,0 +1,17 @@
+*** Settings ***
+Resource          0-商户管理后台-http.txt
+
+*** Keywords ***
+接口删除小二类目
+    [Arguments]    ${sendXiaoerName}
+    创建http上下文    ${G_MARKETING_HOST_TEST}    #创建host
+    通用-http.加载接口模板    SHOP_智能小二    index_delete_xiaoer    #添加excel模板
+    加载商户后台公共请求部分    #获取公共请求
+    ${xiaoer_id}    智能小二-获取小二id    ${sendXiaoerName}
+    修改Url携带的参数    configId    ${xiaoer_id}
+    发送请求
+    验证请求响应状态    200
+    ${body}    Get Response Body
+    log    ${body}
+    Response Body Should Contain    {"code":0,"message":"成功"}
+    [Teardown]

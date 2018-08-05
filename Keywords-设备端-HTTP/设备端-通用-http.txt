@@ -1,0 +1,16 @@
+*** Settings ***
+Resource          0-设备端-http.txt
+
+*** Keywords ***
+通用结果验证
+    [Arguments]    ${code}=4001    ${success}=true
+    ${ret_code}    Get Json Value    ${G_RESPONSE_BODY}    /code
+    ${ret_success}    Get Json Value    ${G_RESPONSE_BODY}    /success
+    Should Contain    ${ret_code}    ${code}
+    Should Contain    ${ret_success}    ${success}
+
+加载设备端公共请求部分
+    Add Request Header    DeviceId    ${G_设备_ID}
+    Add Request Header    Token    ${G_POS_TOKEN}
+    Add Request Header    OperatorId    ${G_设备操作员_ID}
+    Add Request Header    ProductVersion    ${G_设备版本}

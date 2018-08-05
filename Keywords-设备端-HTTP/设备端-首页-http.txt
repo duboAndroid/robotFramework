@@ -1,0 +1,18 @@
+*** Settings ***
+Resource          0-设备端-http.txt
+
+*** Keywords ***
+登录
+    [Arguments]    ${id}=${G_设备操作员_ID}    ${password}=${G_设备操作员_密码}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_首页    index_login
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /id    "${id}"
+    修改Json格式的请求Body    /password    "${password}"
+    发送请求
+    验证请求响应状态
+    #获取token
+    ${token}    Get Json Value By Path    /token
+    ${token}    Replace String    ${token}    "    ${EMPTY}
+    Set Global Variable    ${G_POS_TOKEN}    ${token}
+    Set Global Variable    ${G_POS_ID}    ${id}

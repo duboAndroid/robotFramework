@@ -1,0 +1,13 @@
+*** Settings ***
+Resource          ../0-商户管理后台-UI.txt
+Resource          会员信息.txt
+Resource          会员数据.txt
+Resource          会员设置.txt
+Resource          卡包助手.txt
+Resource          实体卡管理.txt
+Resource          电子卡管理-会员卡.txt
+Resource          电子卡管理-储值卡.txt
+Resource          优惠券管理-普通券.txt
+Resource          优惠券管理-活动券.txt
+Resource          优惠券管理-商品券.txt
+Resource          老客营销-菜单.txt

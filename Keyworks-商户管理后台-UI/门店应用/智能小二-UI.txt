@@ -1,0 +1,202 @@
+*** Settings ***
+Resource          0-门店应用.txt
+
+*** Keywords ***
+点击智能小二
+    通用-web.长等待点击元素    xpath=//*[@id="page-wrapper"]/ul/li[6]/a/span[1]
+
+点击首页配置
+    通用-web.长等待点击元素    xpath=//*[@id="page-wrapper"]/ul/li[6]/ul/li/a
+
+输入查询页内容
+    [Arguments]    ${text}
+    长等待输入文本    xpath=//*[@id="box"]/div[1]/div[1]/div/input    ${text}
+
+点击查询
+    通用-web.长等待点击元素    xpath=//*[@id="box"]/div[1]/div[1]/input
+
+点击创建首页
+    通用-web.长等待点击元素    xpath=//*[@id="box"]/div[1]/div[1]/button
+
+点击适用门店、编辑、删除
+    [Arguments]    ${mendianNum}    ${bianjiNum}
+    通用-web.长等待点击元素    xpath=//*[@id="box"]/div[1]/div[2]/table/tbody/tr[${mendianNum}]/td[4]/a[${bianjiNum}]    #${mendianNum} 代表选择不同的小二项目行数    #${bianjiNum} 1（选择适用门店）2（选择编辑）3（删除）
+
+填写首页名称内容
+    [Arguments]    ${sendXiaoerName}
+    通用-Web.长等待输入文本    xpath=//*[@id="main"]/div/div[1]/div[2]/div[1]/div[3]/input    ${sendXiaoerName}
+
+勾选商家公告内容
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[1]/div[1]/div/label    #勾选商家公告
+
+填写商家公告内容
+    [Arguments]    ${sendGonggao}
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[1]/div[2]/div/div[1]/div/textarea    #填写公告内容
+    通用-Web.长等待输入文本    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[1]/div[2]/div/div[1]/div/textarea    ${sendGonggao}
+
+勾选呼叫店员内容
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[2]/div[1]/div[1]/label    #勾选呼叫店员项
+
+填写呼叫店员内容
+    [Arguments]    ${buttonDetail}    ${sendDianyuanl}
+    长等待输入文本    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[2]/div[2]/div/div[1]/div[${buttonDetail}]/div[1]/input    ${sendDianyuanl}    #${buttonDetail} 1-6 填写不同行数的内容
+
+增加呼叫店员内容
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[2]/div[2]/div/div[2]/button[${dianyuanButton}]    #增加或删除内容 \ ${dianyuanButton} 1=删除呼叫店员内容；2=添加呼叫店员内容
+
+勾选买单内容
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[3]/div/div/label    #勾选买单项
+
+选择买单微信支付方式
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[3]/table/tbody/tr[1]/td/span[2]    #选择支付方式${choicePay}1=微信支付 2=储值卡支付
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[3]/table/tbody/tr[1]/td/span[2]    #选择支付方式${choicePay}1=微信支付 2=储值卡支付
+
+选择买单储值卡支付方式
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[3]/table/tbody/tr[2]/td/span[2]    #选择支付方式${choicePay}1=微信支付 2=储值卡支付
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[3]/table/tbody/tr[2]/td/span[2]    #选择支付方式${choicePay}1=微信支付 2=储值卡支付
+
+勾选点单和订单内容
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[4]/div/div[1]/label
+
+勾选WIFI内容
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[5]/div[1]/label    #勾选WIFI项
+
+勾选点评内容
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[6]/div[1]/div/label    #勾选点评内容项
+
+选择点评项目
+    [Arguments]    ${choiceDianpin}
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[6]/div[2]/div/span[3]    #选择具体点评内容
+    通用-web.长等待点击元素    xpath=//*[@id="commentModal"]/div[2]/div[2]/div/table/tbody/tr[${choiceDianpin}]/td[4]/button    #${choiceDianpin} \ 1-X选择具体点评内容项
+
+勾选公众号内容
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[8]/div[7]/div/label    #勾选公众号项
+
+勾选会员推广内容
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[9]/div/div[1]/label    #勾选会员推广项
+
+勾选开具发票内容
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[10]/div/div/label    #勾选开发票内容推广项
+
+勾选热门活动内容
+    通用-web.长等待点击元素    //*[@id="main"]/div/div[1]/div[2]/div[11]/div[1]/div[1]/label    #勾选热门活动项
+
+填写热门活动URL
+    [Arguments]    ${urlDetail}    ${描述图片}
+    通用-Web.长等待输入文本    xpath=//*[@id="main"]/div/div[1]/div[2]/div[11]/div[2]/div/div[1]/div/div[3]/input    ${urlDetail}
+    通用-Web.长等待元素显示    xpath=//*[@id="main"]/div/div[1]/div[2]/div[11]/div[2]/div/div[1]/div/div[1]/div[1]
+    ${path}    Normalize Path    ${G_Tools路径}\\门店应用\\${描述图片}
+    Choose File    adbtn1    ${path}
+
+增加热门活动内容
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[11]/div[2]/div/div[2]/button    #增加活动内容
+
+删除热门活动内容
+    [Arguments]    ${deleteHuodong}
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[11]/div[${deleteHuodong}]/div/div[1]/div[1]/div[3]/i    #${deleteHuodong} 1-3 删除热门活动项。
+
+勾选本店优惠
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[12]/div[1]/div/label    #勾选本店优惠
+
+选择本店优惠券
+    [Arguments]    ${createCoupon}    ${choiceCoupon}
+    通用-web.长等待点击元素    xpath=//*[@id="couponEdit"]/div/div[${createCoupon}]/span[3]    #选择本店优惠券${createCoupon} 1-4 数量。
+    通用-web.长等待点击元素    xpath=//*[@id="couponModal"]/div[2]/div[2]/div/table/tbody/tr[${choiceCoupon}]/td[5]/button    #选择具体券内容 \ ${choiceCoupon} \ 1-X。
+
+勾选今日特价
+    通用-web.长等待点击元素    xpath=//*[@id="main"]/div/div[1]/div[2]/div[13]/div[1]/div[1]/label    #勾选今日特价
+
+增加今日特价栏
+    通用-web.长等待点击元素    //*[@id="ticketEdit"]/div[2]/button[2]    #最多可增加3张今日特价券。
+
+编辑今日特价图片
+    [Arguments]    ${描述图片}
+    通用-Web.长等待元素显示    xpath=//*[@id="ticketEdit"]/div[1]/div/div[1]/div
+    ${path}    Normalize Path    ${G_Tools路径}\\门店应用\\${描述图片}
+    Choose File    grpCoupon1    ${path}
+
+删除今日特价栏
+    通用-web.长等待点击元素    //*[@id="ticketEdit"]/div[1]/button[2]    #最多可删除3张今日特价券。
+
+选择特价商品券
+    [Arguments]    ${createCouponTrade}    ${choiceCouponTrade}
+    通用-web.长等待点击元素    xpath=//*[@id="ticketEdit"]/div[1]/div[${createCouponTrade}]/div[2]/div[1]/span[3]    #选择特价商品券栏${createCouponTrade} 1-4 选择。
+    通用-web.长等待点击元素    xpath=//*[@id="TuanCouponModal"]/div[2]/div[2]/div/table/tbody/tr[${choiceCouponTrade}]/td[5]/button    #选择具体商品券信息${choiceCouponTrade} 1-X选择
+
+保存配置
+    通用-web.长等待点击元素    id=saveBtn    #保存智能小二配置
+
+校验商家公告未勾选
+    Checkbox Should Not Be Selected    notice    #校验
+
+校验商家公告已勾选
+    Checkbox Should \ Be Selected    notice    #校验
+
+校验呼叫店员未勾选
+    Checkbox Should Not Be Selected    hujiao    #校验
+
+校验呼叫店员已勾选
+    Checkbox Should \ Be Selected    hujiao    #校验
+
+校验买单未勾选
+    Checkbox Should Not Be Selected    maidan    #校验
+
+校验买单已勾选
+    Checkbox Should \ Be Selected    maidan    #校验
+
+校验点单和订单未勾选
+    Checkbox Should Not Be Selected    dcCheck    #校验
+
+校验点单和订单已勾选
+    Checkbox Should \ Be Selected    dcCheck    #校验
+
+校验WIFI未勾选
+    Checkbox Should Not Be Selected    wifiCheck    #校验
+
+校验WIFI已勾选
+    Checkbox Should \ Be Selected    wifiCheck    #校验
+
+校验点评未勾选
+    Checkbox Should Not Be Selected    dianping    #校验
+
+校验点评已勾选
+    Checkbox Should Be Selected    dianping    #校验
+
+校验公众号未勾选
+    Checkbox Should Not Be Selected    gzhCheck    #校验
+
+校验公众号已勾选
+    Checkbox Should \ Be Selected    gzhCheck    #校验
+
+校验会员推广未勾选
+    Checkbox Should Not Be Selected    cardCheck    #校验
+
+校验会员推广已勾选
+    Checkbox Should \ Be Selected    cardCheck    #校验
+
+校验开具发票未勾选
+    Checkbox Should Not Be Selected    invoiceConfig    #校验
+
+校验开具发票已勾选
+    Checkbox Should Be Selected    invoiceConfig    #校验
+
+校验热门活动未勾选
+    Checkbox Should Not Be Selected    adCheck    #校验
+
+校验热门活动已勾选
+    Checkbox Should \ Be Selected    adCheck    #校验
+
+校验本店优惠未勾选
+    Checkbox Should Not Be Selected    couponCheck    #校验
+
+校验本店优惠已勾选
+    Checkbox Should \ Be Selected    couponCheck    #校验
+
+校验今日特价未勾选
+    Checkbox Should Not Be Selected    ticketCheck    #校验
+
+校验今日特价已勾选
+    Checkbox Should Be Selected    ticketCheck    #校验
+
+校验保存成功
+    通用-Web.长等待获取元素文本    xpath=//*[@id="fb-popup"]/div[2]/div[2]/div[2]

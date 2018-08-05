@@ -1,0 +1,7 @@
+*** Settings ***
+Resource          商户管理后台-首页.txt
+Resource          商户管理后台-主菜单.txt
+Resource          ../Keywords-公共/0-自定义关键字.txt
+Resource          门店应用-微信商城-商品管理-UI.txt
+Resource          门店应用/0-门店应用.txt
+Resource          老客营销/0-老客营销.txt

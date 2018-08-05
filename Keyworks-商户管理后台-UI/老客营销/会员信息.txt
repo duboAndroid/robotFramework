@@ -1,0 +1,7 @@
+*** Settings ***
+Resource          0-老客营销.txt
+Resource          0-老客营销.txt
+
+*** Keywords ***
+点击导入会员
+    通用-web.长等待点击元素    xpath=//a[text()='导入会员']

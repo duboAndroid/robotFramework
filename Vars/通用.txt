@@ -1,0 +1,10 @@
+*** Variables ***
+${G_浏览器类型}        gc    # gc--Google Chrome \ \ phantomjs--无窗口
+${G_等待超时时间}       10s    # 元素等待超时
+${G_执行速度}         0.01
+${G_Tools路径}      ${CURDIR}\\..\\Tools
+@{G_执行超时}         2 minutes    用例执行超时    # Test Timeout填写：${G_执行超时[0]} | ${G_执行超时[1]}
+${G_手机端存放图片路径}    /storage/sdcard0/DCIM/Camera    # 手机端路径，小心配置，删除文件需要用到这个路径
+${G_测试浏览器窗口数量}    0
+@{testList}       1    2    3    4    1    2    3
+...               4    # testList

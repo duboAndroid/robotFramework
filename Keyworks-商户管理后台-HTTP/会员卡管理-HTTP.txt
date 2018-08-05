@@ -1,0 +1,80 @@
+*** Settings ***
+Resource          0-商户管理后台-http.txt
+
+*** Keywords ***
+上架
+    [Arguments]    ${name}
+    ${time}    获取当前时间戳
+    ${base_info_id}    卡券-通过卡券名称获取基础信息    ${name}    id
+    ${id}    通过表名和已知列查找其他列数据    card_weixin    base_info_id    ${base_info_id}    id
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员卡管理    index_ka_on
+    加载商户后台公共请求部分
+    修改Url携带的参数    id    ${id}
+    修改Url携带的参数    _    ${time}
+    发送请求
+
+下架
+    [Arguments]    ${name}
+    ${base_info_id}    卡券-通过卡券名称获取基础信息    ${name}    id
+    ${id}    通过表名和已知列查找其他列数据    card_weixin    base_info_id    ${base_info_id}    id
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员卡管理    index_ka_off
+    加载商户后台公共请求部分
+    修改Url携带的参数    id    ${id}
+    发送请求
+
+删除
+    [Arguments]    ${name}
+    ${time}    获取当前时间戳
+    ${base_info_id}    卡券-通过卡券名称获取基础信息    ${name}    id
+    ${id}    通过表名和已知列查找其他列数据    card_weixin    base_info_id    ${base_info_id}    id
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员卡管理    index_ka_delete
+    加载商户后台公共请求部分
+    修改Url携带的参数    id    ${id}
+    修改Url携带的参数    _    ${time}
+    发送请求
+
+编辑
+    [Arguments]    ${name}
+    ${base_info_id}    卡券-通过卡券名称获取基础信息    ${name}    id
+    ${id}    通过表名和已知列查找其他列数据    card_weixin    base_info_id    ${base_info_id}    id
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员卡管理    index_ka_edit
+    加载商户后台公共请求部分
+    修改Url携带的参数    id    ${id}
+    发送请求
+
+获取会员卡列表
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员卡管理    index_get_kalist
+    加载商户后台公共请求部分
+    发送请求
+
+记录操作
+    [Arguments]    ${name}
+    ${serial}    卡券-通过卡券名称获取基础信息    ${name}    serial
+    ${time}    获取当前时间戳
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员卡管理    index_kq_prepaint_record
+    加载商户后台公共请求部分
+    修改Url携带的参数    serial    ${serial}
+    修改Url携带的参数    _    ${time}
+    发送请求
+
+编辑注册资料
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员卡管理    index_customer_config_fields-save
+    加载商户后台公共请求部分
+    发送请求
+
+设置注册奖励
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员卡管理    index_customer_update_taskawardconfig
+    加载商户后台公共请求部分
+    发送请求
+
+设置充值奖励
+
+设置消费奖励

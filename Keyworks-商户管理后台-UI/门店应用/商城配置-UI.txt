@@ -1,0 +1,205 @@
+*** Settings ***
+Resource          0-门店应用.txt
+
+*** Keywords ***
+点击微信商城
+    通用-web.长等待点击元素    xpath=//*[@id="page-wrapper"]/ul/li[3]/a/span[1]
+
+点击商城配置
+    通用-web.长等待点击元素    xpath=//*[@id="page-wrapper"]/ul/li[3]/ul/li[2]/a
+
+点击适用门店
+    通用-web.长等待点击元素    xpath=//*[@id="body-content"]/div[1]/div/div/div[1]/table/tbody/tr[1]/td[3]/div/a
+
+输入门店名称并搜索
+    [Arguments]    ${门店名称}
+    通用-web.长等待输入文本    xpath=//*[@id="searchKeyWord"]    ${门店名称}
+    通用-web.长等待点击元素    xpath=//*[@id="shop"]/div[2]/div[2]/div[1]/div[1]/i
+
+校验搜索结果数量
+    [Arguments]    ${num1}
+    sleep    5s
+    ${num2}    通用-web.长等待获取元素文本    xpath=//*[@id="shop"]/div[2]/div[2]/div[1]/div[2]/label/span
+    should be equal    ${num1}    ${num2}
+
+校验搜索结果
+    [Arguments]    ${a}
+    ${b}    通用-web.长等待获取元素文本    xpath=//*[@id="branch_list"]/li/label
+    should be equal    ${a}    ${b}
+
+点击全选按钮
+    通用-web.长等待点击元素    xpath=//*[@id="checkAll"]
+
+校验全选数量
+    sleep    5s
+    ${num1}    通用-web.长等待获取元素文本    xpath=//*[@id="shop"]/div[2]/div[2]/div[1]/div[2]/label/span
+    ${num2}    通用-web.长等待获取元素文本    xpath=//*[@id="shop"]/div[2]/div[2]/div[2]/div[1]/span
+    should be equal    ${num1}    ${num2}
+
+校验全不选数量
+    ${num2}    通用-web.长等待获取元素文本    xpath=//*[@id="shop"]/div[2]/div[2]/div[2]/div[1]/span
+    should be equal    0    ${num2}
+
+勾选卡友测试门店
+    通用-web.长等待点击元素    //*[@id="checkbox_1516662774"]
+
+校验门店名称
+    [Arguments]    ${i}
+    ${j}    通用-web.长等待获取元素文本    xpath=//*[@id="shop"]/div[2]/div[2]/div[2]/div[2]/ul/li/div
+    should be equal    ${i}    ${j}
+
+关闭弹窗
+    通用-web.长等待点击元素    xpath=//*[@id="tip-popup"]/div[2]/div[1]/i
+
+点击公告栏编辑按钮
+    通用-web.长等待点击元素    xpath=//*[@id="body-content"]/div[1]/div/div/div[3]/table/tbody/tr[1]/td[3]/div/a
+
+输入公告并确定
+    [Arguments]    ${门店名称}
+    通用-web.长等待输入文本    xpath=//*[@id="text-announcement"]    ${门店名称}
+    通用-web.长等待点击元素    xpath=//*[@id="announcement"]/div[2]/div[2]/div[2]/a[2]
+
+校验公告内容
+    [Arguments]    ${a}
+    ${b}    通用-web.长等待获取元素文本    xpath=//*[@id="announcementId"]
+    should be equal    ${a}    ${b}
+
+点击起送价编辑按钮
+    通用-web.长等待点击元素    xpath=//*[@id="body-content"]/div[1]/div/div/div[3]/table/tbody/tr[2]/td[3]/div/a
+
+输入起送价并确定
+    [Arguments]    ${num}
+    通用-web.长等待输入文本    xpath=//*[@id="least-send-fee-value"]    ${num}
+    通用-web.长等待点击元素    xpath=//*[@id="least-send-fee-confirm"]
+
+校验起送价
+    [Arguments]    ${a}
+    ${b}    通用-web.长等待获取元素文本    xpath=//*[@id="lest-send-fee-show"]
+    should be equal    ￥ ${a}    ${b}
+
+点击配送费编辑按钮
+    通用-web.长等待点击元素    xpath=//*[@id="body-content"]/div[1]/div/div/div[3]/table/tbody/tr[3]/td[3]/div/a
+
+输入配送费并确定
+    [Arguments]    ${num}
+    通用-web.长等待输入文本    xpath=//*[@id="deliver-fee-value"]    ${num}
+    通用-web.长等待点击元素    xpath=//*[@id="deliver-fee-confirm"]
+
+校验配送费
+    [Arguments]    ${a}
+    ${b}    通用-web.长等待获取元素文本    xpath=//*[@id="deliver-fee-show"]
+    should be equal    ￥ ${a}    ${b}
+
+点击配送范围按钮
+    通用-web.长等待点击元素    xpath=//*[@id="body-content"]/div[1]/div/div/div[3]/table/tbody/tr[4]/td[3]/div/a
+
+选择不限范围并确定
+    通用-web.长等待点击元素    xpath=//*[@id="send"]/div[2]/div[2]/div[1]/span[1]/div/ins
+    通用-web.长等待点击元素    xpath=//*[@id="deliver-range-confirm"]
+
+校验不限范围已保存
+    通用-Web.长等待元素显示    xpath=//*[text()='不限制']
+
+设置限制范围并确定
+    [Arguments]    ${num}
+    通用-web.长等待点击元素    xpath=//*[@id="send"]/div[2]/div[2]/div[1]/span[2]/div/ins
+    通用-web.长等待输入文本    xpath=//*[@id="deliver-range-value"]    ${num}
+    通用-web.长等待点击元素    xpath=//*[@id="deliver-range-confirm"]
+
+校验限制范围正确
+    [Arguments]    ${a}
+    sleep    2s
+    ${b}    通用-web.长等待获取元素文本    xpath=//*[@id="deliver-range-show"]
+    should be equal    ${a} 公里    ${b}
+
+设置营业日
+    [Arguments]    ${勾选参数}
+    通用-web.长等待元素显示    xpath=//*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]
+    ${value}    Selenium2Library.Get Element Attribute    xpath=//*[@id="businessWeek"]@value
+    Run Keyword If    "周一:false" in "${value}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[1]
+    Run Keyword If    "周二:true" in "${value}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[2]
+    Run Keyword If    "周三:true" in "${value}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[3]
+    Run Keyword If    "周四:true" in "${value}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[4]
+    Run Keyword If    "周五:true" in "${value}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[5]
+    Run Keyword If    "周六:true" in "${value}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[6]
+    Run Keyword If    "周日:true" in "${value}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[7]
+    #再根据参数勾选
+    Run Keyword unless    "1" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[1]
+    Run Keyword If    "2" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[2]
+    Run Keyword If    "3" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[3]
+    Run Keyword If    "4" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[4]
+    Run Keyword If    "5" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[5]
+    Run Keyword If    "6" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[6]
+    Run Keyword If    "7" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[1]/div/a[7]
+
+点击营业时间按钮
+    通用-web.长等待点击元素    xpath=//*[@id="body-content"]/div[1]/div/div/div[3]/table/tbody/tr[5]/td[3]/div/a
+
+输入营业时间并确定
+    [Arguments]    ${n1}    ${n2}    ${n3}    ${n4}
+    通用-web.长等待输入文本    xpath=//*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[2]/div/span/input[1]    ${n1}
+    通用-web.长等待输入文本    xpath=//*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[2]/div/span/input[2]    ${n2}
+    通用-web.长等待输入文本    xpath=//*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[2]/div/span/input[3]    ${n3}
+    通用-web.长等待输入文本    xpath=//*[@id="shoptime"]/div[2]/div[2]/div[1]/div/div[2]/div/span/input[4]    ${n4}
+    通用-web.长等待点击元素    xpath=//*[@id="shoptime"]/div[2]/div[2]/div[2]/a[2]
+
+校验时间设置正确
+    [Arguments]    ${a}    ${c}
+    ${b}    通用-web.长等待获取元素文本    xpath=//*[@id="businessHoursTD"]
+    should be equal    ${a} ${c}    ${b}
+
+点击订单取消原因
+    通用-web.长等待点击元素    xpath=//*[@id="body-content"]/div[1]/div/div/div[3]/table/tbody/tr[6]/td[3]/div/a
+
+输入订单取消原因并确定
+    [Arguments]    ${原因1}    ${原因2}
+    通用-web.长等待点击元素    xpath=//*[@id="cancel-reason-list"]/div[1]/span
+    通用-web.长等待点击元素    xpath=//*[@id="cancel-reason-list"]/div[1]/span
+    通用-web.长等待点击元素    xpath=//*[@value="+新增一项取消原因"]
+    通用-web.长等待点击元素    xpath=//*[@value="+新增一项取消原因"]
+    通用-web.长等待输入文本    xpath=//*[@id="cancel-reason-list"]/div/div[1]/input    ${原因1}
+    通用-web.长等待输入文本    xpath=//*[@id="cancel-reason-list"]/div/div[2]/input    ${原因2}
+    通用-web.长等待点击元素    xpath=//*[@id="reason"]/div[2]/div[2]/div[2]/a[2]
+
+微信商城配置-点击微信商城配置
+    通用-web.长等待点击元素    xpath=//*[text()='微信商城配置']
+
+微信商城配置-点击适用门店
+    通用-web.长等待点击元素    xpath=//*[@id="app"]/div[1]/div/div/div[1]/table/tbody/tr[1]/td[3]/div/a
+
+微信商城配置-打开到店自提开关
+    ${a}    通用-web.长等待获取元素属性    xpath=//*[@id="app"]/div[1]/div/div/div[2]/table/tbody/tr[1]/td[3]/div/span    style
+    run keyword if    '${a}'=='box-shadow: rgb(223, 223, 223) 0px 0px 0px 0px inset; border-color: rgb(223, 223, 223); background-color: rgb(255, 255, 255); transition: border 0.1s, box-shadow 0.1s;'    微信商城配置.点击自提开关
+
+微信商城配置-点击自提开关
+    通用-web.长等待点击元素    //*[@id="app"]/div[1]/div/div/div[2]/table/tbody/tr[1]/td[3]/div/span
+
+微信商城配置-点击自提编辑按钮
+    通用-web.长等待点击元素    xpath=//*[@id="app"]/div[1]/div/div/div[2]/table/tbody/tr[2]/td[3]/div/a
+
+微信商城配置-设置自提时间
+    [Arguments]    ${num1}    ${num2}    ${num3}    ${num4}
+    通用-web.长等待输入文本    //*[@id="app"]/div[10]/div[2]/div[2]/div[1]/div[2]/input[1]    ${num1}
+    通用-web.长等待输入文本    //*[@id="app"]/div[10]/div[2]/div[2]/div[1]/div[2]/input[2]    ${num2}
+    通用-web.长等待输入文本    //*[@id="app"]/div[10]/div[2]/div[2]/div[1]/div[2]/input[3]    ${num3}
+    通用-web.长等待输入文本    //*[@id="app"]/div[10]/div[2]/div[2]/div[1]/div[2]/input[4]    ${num4}
+    通用-web.长等待点击元素    //*[@id="app"]/div[10]/div[2]/div[2]/div[2]/a[2]
+
+微信商城配置-关闭弹窗
+    通用-web.长等待点击元素    //*[@id="fb-popup"]/div[2]/div[1]/i
+
+店内下单配置-点击店内下单配置
+    通用-web.长等待点击元素    xpath=//*[text()='店内下单配置']
+
+店内下单配置-点击订单取消按钮
+    通用-web.长等待点击元素    xpath=//*[@id="body-content"]/div[1]/div/div/div[3]/table/tbody/tr[2]/td[3]/div/a
+
+校验保存门店名称
+    [Arguments]    ${i}
+    ${j}    通用-web.长等待获取元素文本    xpath=//div[text()='卡友测试门店']
+    should be equal    ${i}    ${j}
+
+删除门店
+    [Arguments]    ${i}
+    通用-Web.长等待点击元素    xpath=//div[text()='${i}']/preceding-sibling::span
+    通用-Web.长等待点击元素    //*[@id="shop"]/div[2]/div[2]/div[2]/div[3]/a[2]

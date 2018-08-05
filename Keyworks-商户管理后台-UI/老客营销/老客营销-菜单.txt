@@ -1,0 +1,75 @@
+*** Settings ***
+Resource          0-老客营销.txt
+
+*** Keywords ***
+点击优惠券管理
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[3]/a/span[2]
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[3]/ul/li[2]/a
+
+点击优惠券营销数据
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[3]/a/span[2]
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[3]/ul/li[5]/a
+
+点击会员任务奖励
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[6]
+
+点击会员信息
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[5]/a/span[2]
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[5]/ul/li[2]/a
+
+点击会员分组与折扣
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[7]
+
+点击会员数据
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[5]/a/span[2]
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[5]/ul/li[3]/a
+
+点击会员设置
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[5]/a/span[2]
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[5]/ul/li[1]/a
+
+点击余额积分
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[10]
+
+点击储值卡营销数据
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[3]/a/span[2]
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[3]/ul/li[6]/a
+
+点击卡包助手
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[3]/a/span[2]
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[3]/ul/li[4]/a
+
+点击实体卡管理
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[3]/a/span[2]
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[3]/ul/li[3]/a
+
+点击微信派券
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[4]/a/span[2]
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[4]/ul/li[1]/a
+
+点击推文营销
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[13]
+
+点击支付即会员
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[11]
+
+点击电子卡管理
+    通用-web.长等待点击元素    xpath=//div[@id="page-wrapper"]/ul/li[3]/a/span[2]
+    通用-web.长等待点击元素    xpath=//*[@id="page-wrapper"]/ul/li[3]/ul/li[1]/a
+
+点击积分商城
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[9]
+
+点击积分抵现
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[8]
+
+点击营销方案
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[2]
+
+点击营销活动创建
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[12]/a/span[2]
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[12]/ul/li[1]/a
+
+点击营销活动管理
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[12]/a/span[2]
+    通用-web.长等待点击元素    xpath=//div[@id='page-wrapper']/ul/li[12]/ul/li[2]/a

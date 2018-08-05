@@ -1,0 +1,16 @@
+*** Settings ***
+Resource          0-商户管理后台-http.txt
+
+*** Keywords ***
+登录
+    [Arguments]    ${username}=${G_商户账号}    ${password}=${G_商户密码}
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_首页    index_login
+    修改Url携带的参数    username    ${username}
+    修改Url携带的参数    password    ${password}
+    发送请求
+    #获取JSESSIONID
+    ${Cookie}    ExtendHttpLibrary.Get Response Header    Set-Cookie
+    @{words}    Split String    ${Cookie[0]}    JSESSIONID=
+    @{word}    Split String    @{words}[1]    ;
+    Set Global Variable    ${G_SHOP_JSESSIONID}    @{word}[0]

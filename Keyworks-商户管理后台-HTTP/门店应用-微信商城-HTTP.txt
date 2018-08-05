@@ -1,0 +1,149 @@
+*** Settings ***
+Resource          0-商户管理后台-http.txt
+
+*** Keywords ***
+接口删除商品
+    [Arguments]    ${商品名称}
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    ${商品id}    数据库.商城-通过商品名称获取商品id    ${商品名称}
+    通用-http.加载接口模板    SHOP_微信商城    index_delete_goods
+    修改Url携带的参数    id    ${商品id}
+    发送请求
+    验证请求响应状态    200
+    ${body}    Get Response Body
+    log    ${body}
+    Response Body Should Contain    "success":true
+
+接口批量删除出售商品
+    [Arguments]    ${商品名称1}    ${商品名称2}
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    ${商品1id}    数据库.商城-通过商品名称获取商品id    ${商品名称1}
+    ${商品2id}    数据库.商城-通过商品名称获取商品id    ${商品名称2}
+    通用-http.加载接口模板    SHOP_微信商城    index_batch_delete_goods
+    修改Url携带的参数    id_arr    ${商品1id}%2C${商品2id}
+    修改Url携带的参数    goodStatus    SHELVE    #此为出售中商品
+    发送请求
+    验证请求响应状态    200
+    ${body}    Get Response Body
+    log    ${body}
+    Response Body Should Contain    "success":true
+
+接口批量删除仓库商品
+    [Arguments]    ${商品名称1}    ${商品名称2}
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    ${商品1id}    数据库.商城-通过商品名称获取商品id    ${商品名称1}
+    ${商品2id}    数据库.商城-通过商品名称获取商品id    ${商品名称2}
+    通用-http.加载接口模板    SHOP_微信商城    index_batch_delete_goods
+    修改Url携带的参数    id_arr    ${商品1id}%2C${商品2id}
+    修改Url携带的参数    goodStatus    STORE    #此为仓库中商品！
+    发送请求
+    验证请求响应状态    200
+    ${body}    Get Response Body
+    log    ${body}
+    Response Body Should Contain    "success":true
+
+接口查询商品
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_微信商城    index_search_goods
+    发送请求
+    验证请求响应状态    200
+    ${body}    Get Response Body
+    log    ${body}
+    Response Body Should Contain    "success":true
+
+配置外卖营业时间
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_微信商城    index_save_businessHours
+    发送请求
+    验证请求响应状态
+
+创建新商品
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    商户管理后台-通用-http.加载商户后台公共请求部分
+    通用-http.加载接口模板    SHOP_微信商城    index_new_goods
+    发送请求
+
+物流配送
+    [Arguments]    ${orderId}    ${sdcName}    ${deliverNo}    ${deliverPhone}=
+    [Documentation]    ${sdc} 即物流公司名称${shopDeliverCompanyName} \
+    ${sdc_id}    数据库.商城-通过物流公司名称查询物流公司sdc_id    ${sdcName}
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_微信商城    index_save_d_no
+    通用-Http.修改Url携带的参数    mallProductOrderId    ${orderId}
+    通用-Http.修改Url携带的参数    shopDeliverCompanyId    ${sdc_id}
+    通用-Http.修改Url携带的参数    deliverNo    ${deliverNo}
+    通用-Http.修改Url携带的参数    deliverPhone    ${deliverPhone}
+    商户管理后台-通用-Http.加载商户后台公共请求部分
+    发送请求
+    验证请求响应状态    200
+    Should Contain    ${G_RESPONSE_BODY}    "success":true
+
+确认订单
+    [Arguments]    ${orderId}
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_微信商城    index_mo_confirm
+    通用-Http.修改Url携带的参数    id    ${orderId}
+    商户管理后台-通用-Http.加载商户后台公共请求部分
+    发送请求
+    验证请求响应状态    200
+    Should Contain    ${G_RESPONSE_BODY}    "success":true
+
+取消订单
+    [Arguments]    ${orderId}
+    ${shopid}    商城-通过订单ID查找商户ID    ${orderId}
+    ${reasonId}    商城-通过商户ID查找取消原因ID    ${shopid}    0
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_微信商城    index_mo_cancel
+    通用-Http.修改Url携带的参数    mId    ${orderId}
+    通用-Http.修改Url携带的参数    reasonId    ${reasonId}
+    商户管理后台-通用-Http.加载商户后台公共请求部分
+    发送请求
+    验证请求响应状态    200
+    Should Contain    ${G_RESPONSE_BODY}    "success":true
+
+结单
+    [Arguments]    ${orderId}
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_微信商城    index_mo_statement
+    通用-Http.修改Url携带的参数    id    ${orderId}
+    商户管理后台-通用-Http.加载商户后台公共请求部分
+    发送请求
+    验证请求响应状态    200
+    Should Contain    ${G_RESPONSE_BODY}    "success":true
+
+获取订单详情
+    [Arguments]    ${orderId}
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_微信商城    index_mo_detail
+    通用-Http.修改Url携带的参数    id    ${orderId}
+    商户管理后台-通用-Http.加载商户后台公共请求部分
+    发送请求
+    验证请求响应状态    200
+
+校验订单状态
+    [Arguments]    ${orderId}    ${status}
+    门店应用-微信商城-HTTP.获取订单详情    ${orderId}
+    ${result}    Get Json Value    ${G_RESPONSE_BODY}    /mallProductOrder/status
+    ${待付款}    Set Variable    1
+    ${待确认}    Set Variable    2
+    ${待配送(未付款)}    Set Variable    3
+    ${待配送}    Set Variable    4
+    ${待收货(未付款)}    Set Variable    5
+    ${待收货}    Set Variable    6
+    ${已付款}    Set Variable    7
+    ${商户取消}    Set Variable    81
+    ${用户取消}    Set Variable    82
+    ${异常关闭}    Set Variable    90
+    ${过期自动关闭}    Set Variable    91
+    ${交易完成}    Set Variable    100
+    ${超时完成}    Set Variable    101
+    ${顾客确认收货}    Set Variable    102
+    Should Be Equal    ${${status}}    ${result}
+
+订单详情校验留言信息
+    [Arguments]    ${msg}
+    ${result}    Get Json Value    ${G_RESPONSE_BODY}    /mallGoodsList/0/mallWxCustomerMsgDto/msg
+    Should Be Equal    ${result}    ${msg}
+
+返回成功校验
+    Should Contain    ${G_RESPONSE_BODY}    "success":true

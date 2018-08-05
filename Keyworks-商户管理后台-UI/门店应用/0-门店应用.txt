@@ -1,0 +1,4 @@
+*** Settings ***
+Resource          ../0-商户管理后台-UI.txt
+Resource          商城配置-UI.txt
+Resource          智能小二-UI.txt

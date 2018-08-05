@@ -1,0 +1,20 @@
+*** Settings ***
+Resource          0-老客营销.txt
+
+*** Variables ***
+${Locator_会员注册资料表}    xpath=//table[@class='com-table']
+${Locator_注册资料配置表}    xpath=//table[@id='member-config-table']
+
+*** Keywords ***
+会员设置-点击编辑注册资料
+    通用-web.长等待点击元素    xpath=//a[text()='编辑注册资料>']
+
+会员设置-获取会员注册资料表数据
+    [Arguments]    ${src_data}    ${src_column}    ${dic_column}
+    通用-web.长等待点击元素    xpath=//a[text()='编辑注册资料>']
+    [Return]    ${return_data}
+
+会员设置-获取注册资料配置表数据
+    [Arguments]    ${src_data}    ${src_column}    ${dic_column}
+    ${return_data}    表格.通过已知列数据查找其他列数据    ${Locator_注册资料配置表}    ${src_data}    ${src_column}    ${dic_column}
+    [Return]    ${return_data}

@@ -1,0 +1,274 @@
+*** Settings ***
+Resource          0-老客营销.txt
+
+*** Variables ***
+${table_商品券}      xpath=//*[@id="tab-1"]/div[2]/table
+
+*** Keywords ***
+上传图片
+    [Arguments]    ${封面图}
+    通用-web.长等待元素显示    xpath=//*[@id="detailsLoadPic"]/div/div[2]/span[1]
+    ${path}    Normalize Path    ${G_Tools路径}\\老客营销\\${封面图}
+    Choose File    xpath=//*[@id="detailsLoadPic"]/div/div[2]/span[1]/input    ${path}
+
+上架数量
+    [Arguments]    ${title}
+    通用-web.长等待输入文本    xpath=//*[@id="card-form"]/div/div/div[2]/div[5]/div[3]/div/input    ${title}
+
+下架
+    [Arguments]    ${名称}    ${确定}=
+    优惠券管理-商品券.通过名称操作优惠券    ${名称}    下架
+    Run Keyword If    '${确定}'==''    通用-web.长等待点击元素    xpath=/html/body/div[1]/div/div[2]/div[2]/a[text()='确定']
+    Run Keyword If    '${确定}'!=''    通用-web.长等待点击元素    xpath=/html/body/div[1]/div/div[2]/div[2]/a[text()='取消']
+    通用-web.长等待元素显示    //a[text()='制作商品券']
+    sleep    2s
+    老客营销-菜单.点击优惠券管理
+    优惠券管理-商品券.点击商品券
+
+不可转赠
+    通用-web.长等待点击元素    xpath=//span[contains(text(),'否')]
+
+仅保存
+    通用-web.长等待点击按钮    仅保存
+
+代金券-取消在线支付直接使用
+    通用-web.长等待点击元素    xpath=//*[@id="cashScope"]
+
+代金券-支持叠加使用
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div/div[2]/div[5]/div[1]/div/div[1]/div[3]/div/input[1]
+
+代金券-输入减免金额
+    [Arguments]    ${title}
+    通用-web.长等待输入文本    xpath=//*[@id="cashReduceCost"]    ${title}
+
+代金券-输入起用金额
+    [Arguments]    ${title}
+    通用-web.长等待输入文本    xpath=//*[@id='cashLeastCost']    ${title}
+
+使用提醒
+    [Arguments]    ${text}
+    通用-web.长等待输入文本    xpath=//*[@id="fortip"]    ${text}
+
+使用说明
+    [Arguments]    ${text}
+    通用-web.长等待输入文本    xpath=//*[@id="descriptionTxt"]    ${text}
+
+保存并上架
+    通用-web.长等待点击按钮    保存并上架
+
+分享
+    [Arguments]    ${名称}    ${导出}=    ${复制}=
+    ${row_table}    优惠券管理-商品券.通过名称操作优惠券    ${名称}    分享
+    ${row_tbody}    Evaluate    int(${row_table})-1
+    Run Keyword If    '${导出}'!=''    通用-web.长等待点击元素    xpath=//*[@id="tab-1"]/div[2]/table/tbody/tr[${row_tbody}]/td[7]/div/div/a[1]
+    Run Keyword If    '${复制}'!=''    通用-web.长等待点击元素    xpath=//*[@id="tab-1"]/div[2]/table/tbody/tr[${row_tbody}]/td[7]/div/div/a[1]
+
+创建代金券
+    ${random}    Generate Random String    5    [NUMBERS]
+    ${名称}    Set Variable    代金券${random}
+    点击老客营销
+    老客营销-菜单.点击优惠券管理
+    优惠券管理-商品券.点击商品券
+    优惠券管理-商品券.点击制作商品券
+    优惠券管理-商品券.选择背景颜色    2
+    优惠券管理-商品券.输入优惠券名称    ${名称}
+    优惠券管理-商品券.代金券-输入减免金额    1
+    优惠券管理-商品券.代金券-输入起用金额    2
+    优惠券管理-商品券.代金券-支持叠加使用
+    优惠券管理-商品券.代金券-取消在线支付直接使用
+    优惠券管理-商品券.售价    1
+    优惠券管理-商品券.上架数量    100
+    优惠券管理-商品券.固定时长    1    10
+    优惠券管理-商品券.限购次数    2
+    优惠券管理-商品券.核销限制    5
+    优惠券管理-商品券.使用提醒    使用提醒
+    优惠券管理-商品券.使用说明    使用说明
+    优惠券管理-商品券.客服电话    15016718455
+    优惠券管理-商品券.上传图片    6D39.png
+    优惠券管理-商品券.描述文字    描述文字
+    优惠券管理-商品券.选择使用时间    135
+    优惠券管理-商品券.设置上午不可用
+    优惠券管理-商品券.指定门店
+    优惠券管理-商品券.取消同步微信卡包
+    #优惠券管理-商品券-不可转赠
+    优惠券管理-商品券.保存并上架
+    优惠券管理-商品券.校验是否进入列表页
+    优惠券管理-商品券.通过名称获取优惠券信息    ${名称}
+    [Return]    ${名称}
+
+删除
+    [Arguments]    ${名称}    ${确定}=
+    优惠券管理-商品券.通过名称操作优惠券    ${名称}    删除
+    Run Keyword If    '${确定}'==''    通用-web.长等待点击元素    xpath=/html/body/div[1]/div/div[2]/div[2]/a[text()='确定']
+    Run Keyword If    '${确定}'!=''    通用-web.长等待点击元素    xpath=/html/body/div[1]/div/div[2]/div[2]/a[text()='取消']
+    通用-web.长等待元素显示    //a[text()='制作商品券']
+    sleep    2s
+    老客营销-菜单.点击优惠券管理
+    优惠券管理-商品券.点击商品券
+
+取消
+    通用-web.长等待点击元素    xpath=//*[@id="close"]
+
+取消同步微信卡包
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div/div[2]/div[7]/div[11]/div/div/div/label/span
+
+售价
+    [Arguments]    ${title}
+    通用-web.长等待输入文本    xpath=//*[@id="card-form"]/div/div/div[2]/div[5]/div[2]/div/input    ${title}
+
+固定日期
+    [Arguments]    ${day}=10
+    #输入开始时间
+    ${currenttime}    Get Current Date
+    ${Splittime}    Split String    ${currenttime}    ${SPACE}
+    Execute Javascript    document.getElementById('dateInfoBeginTimestamp').value="${Splittime[0]}";
+    #输入结束时间
+    ${overtime}    Get Current Date    increment=+${day} day
+    ${Splittime}    Split String    ${overtime}    ${SPACE}
+    Execute Javascript    document.getElementById('dateInfoEndTimestamp').value="${Splittime[0]}";
+
+固定时长
+    [Arguments]    ${begin}=    ${date}=
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div/div[2]/div[5]/div[4]/div/div[2]/input
+    Run Keyword If    '${begin}'!=''    通用-web.长等待输入文本    xpath=//*[@id="fixedBeginTerm"]    ${begin}
+    Run Keyword If    '${date}'!=''    通用-web.长等待输入文本    xpath=//*[@id="dateInfoFixedTerm"]    ${date}
+
+客服电话
+    [Arguments]    ${number}=
+    Run Keyword If    '${number}'!=''    通用-web.长等待输入文本    xpath=//input[@id='servicePhone']    ${number}
+
+强制删除
+    [Arguments]    ${名称}
+    ${row_table}    表格.翻页查找数据    ${table_商品券}    ${名称}    1
+    ${状态}    表格.通过已知列数据查找其他列数据    ${table_商品券}    ${名称}    1    7
+    Run Keyword If    '${状态}'=='已上架'    优惠券管理-商品券.下架    ${名称}
+    #再删除
+    优惠券管理-商品券.删除    ${名称}
+
+折扣券-取消在线支付使用
+    通用-web.长等待点击元素    xpath=//*[@id="discountScope"]
+
+折扣券-输入折扣
+    [Arguments]    ${text}
+    通用-web.长等待输入文本    xpath=//*[@id="discount_input"]    ${text}
+
+指定门店
+    通用-web.长等待点击元素    xpath=//*[@id="branch-list"]/div/label[2]/span
+    通用-web.长等待点击元素    xpath=//*[@id="branch_list"]/div[3]/label/span
+    通用-web.长等待点击元素    xpath=//*[@id="branch"]/div/div/div/div[2]/div[4]/div/button[1]
+
+描述文字
+    [Arguments]    ${text}
+    通用-web.长等待输入文本    xpath=//*[@id="descriptive-text"]    ${text}
+
+校验是否进入列表页
+    通用-web.长等待元素显示    //*[@id="tab-1"]/div[1]/a
+
+核销限制
+    [Arguments]    ${number}=
+    Run Keyword If    '${number}'!=''    通用-web.长等待输入文本    xpath=//*[@id="batchVerifyLimit"]    ${number}
+
+测试不可修改
+    [Arguments]    ${xpath}
+    Selenium2Library.Page Should Contain Element    ${xpath}[@readonly='readonly']
+
+测试不可修改1
+    [Arguments]    ${xpath}
+    Selenium2Library.Page Should Contain Element    ${xpath}[@disabled='disabled']
+
+点击制作商品券
+    通用-web.长等待点击元素    xpath=//*[@id="tab-1"]/div[1]/a
+
+点击商品券
+    通用-web.长等待点击元素    xpath=//*[@id="body-content"]/div[1]/div/div/div[1]/div/ul/li[3]/a
+
+礼品券-礼品名称
+    [Arguments]    ${text}
+    通用-web.长等待输入文本    xpath=//*[@id="gift"]    ${text}
+
+编辑
+    [Arguments]    ${名称}
+    优惠券管理-商品券.通过名称操作优惠券    ${名称}    编辑
+
+设置上午不可用
+    通用-web.长等待点击元素    xpath=//*[@id="start-hour"]
+    通用-web.长等待点击元素    xpath=//*[@id="start-hour"]/option[13]
+
+设置周末不可用
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[6]
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[7]
+
+输入优惠券名称
+    [Arguments]    ${title}
+    通用-web.长等待输入文本    xpath=//*[@id="member"]    ${title}
+
+选择使用时间
+    [Arguments]    ${勾选参数}
+    # 先清掉
+    通用-web.长等待元素显示    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[1]
+    ${value}    Selenium2Library.Get Element Attribute    xpath=//*[@id="active-type"]@value
+    Run Keyword If    "MONDAY" in "${value}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[1]
+    Run Keyword If    "TUESDAY" in "${value}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[2]
+    Run Keyword If    "WEDNESDAY" in "${value}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[3]
+    Run Keyword If    "THURSDAY" in "${value}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[4]
+    Run Keyword If    "FRIDAY" in "${value}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[5]
+    Run Keyword If    "SATURDAY" in "${value}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[6]
+    Run Keyword If    "SUNDAY" in "${value}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[7]
+    #再根据参数勾选
+    Run Keyword If    "1" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[1]
+    Run Keyword If    "2" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[2]
+    Run Keyword If    "3" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[3]
+    Run Keyword If    "4" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[4]
+    Run Keyword If    "5" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[5]
+    Run Keyword If    "6" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[6]
+    Run Keyword If    "7" in "${勾选参数}"    通用-web.长等待点击元素    //*[@id="card-form"]/div/div/div[2]/div[7]/div[8]/div/span[7]
+
+选择折扣券
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div/div[2]/div[4]/div/div/a[2]
+
+选择礼品券
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div/div[2]/div[4]/div/div/a[3]
+
+选择背景颜色
+    [Arguments]    ${编号}
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div/div[2]/div[2]/div/p/span[${编号}]
+
+选择通用券
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div/div[2]/div[4]/div/div/a[4]
+
+通用券-副标题
+    [Arguments]    ${text}
+    通用-web.长等待输入文本    xpath=//*[@id="subTitle"]    ${text}
+
+通用券-详情描述
+    [Arguments]    ${text}
+    通用-web.长等待输入文本    xpath=//*[@id="generalCouponDefaultDetail"]    ${text}
+
+通过名称操作优惠券
+    [Arguments]    ${名称}    ${操作}
+    ${row_table}    表格.翻页查找数据    ${table_商品券}    ${名称}    1
+    ${row_tbody}    Evaluate    int(${row_table})-1
+    通用-web.长等待点击元素    ${table_商品券}/tbody/tr[${row_tbody}]/td[8]/div/a[text()='${操作}']
+    [Return]    ${row_tbody}
+
+通过名称获取优惠券信息
+    [Arguments]    ${名称}    ${券类型}=    ${有效期}=    ${售价}=    ${出售数量}=    ${剩余数量}=
+    ...    ${状态}=
+    表格.翻页查找数据    ${table_商品券}    ${名称}    1
+    ${ret_券类型}    表格.通过已知列数据查找其他列数据    ${table_商品券}    ${名称}    1    2
+    Run Keyword If    '${券类型}'!=''    Should Be Equal    ${券类型}    ${ret_券类型}
+    ${ret_有效期}    表格.通过已知列数据查找其他列数据    ${table_商品券}    ${名称}    1    3
+    Run Keyword If    '${有效期}'!=''    Should Be Equal    ${有效期}    ${ret_有效期}
+    ${ret_售价}    表格.通过已知列数据查找其他列数据    ${table_商品券}    ${名称}    1    4
+    Run Keyword If    '${售价}'!=''    Should Be Equal    ${售价}    ${ret_售价}
+    ${ret_出售数量}    表格.通过已知列数据查找其他列数据    ${table_商品券}    ${名称}    1    5
+    Run Keyword If    '${出售数量}'!=''    Should Be Equal    ${出售数量}    ${ret_出售数量}
+    ${ret_剩余数量}    表格.通过已知列数据查找其他列数据    ${table_商品券}    ${名称}    1    6
+    Run Keyword If    '${剩余数量}'!=''    Should Be Equal    ${剩余数量}    ${ret_剩余数量}
+    ${ret_状态}    表格.通过已知列数据查找其他列数据    ${table_商品券}    ${名称}    1    7
+    Run Keyword If    '${状态}'!=''    Should Be Equal    ${状态}    ${ret_状态}
+    [Return]    ${ret_券类型}    ${ret_有效期}    ${ret_售价}    ${ret_出售数量}    ${ret_剩余数量}    ${ret_状态}
+
+限购次数
+    [Arguments]    ${number}=
+    Run Keyword If    '${number}'!=''    通用-web.长等待输入文本    xpath=//*[@id="card-form"]/div/div/div[2]/div[5]/div[7]/div/input    ${number}

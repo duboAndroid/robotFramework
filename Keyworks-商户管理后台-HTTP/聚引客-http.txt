@@ -1,0 +1,20 @@
+*** Settings ***
+Resource          ../Keywords-公共/0-自定义关键字.txt
+
+*** Keywords ***
+验证返回内容
+    [Arguments]    ${return}
+    ${body}    get response body
+    log    ${body}
+    response body should contain    ${return}
+
+调用接口模板
+    [Arguments]    ${excel名称}    ${接口索引}
+    ExtendHttpLibrary.Create Context    ${host} =${G_SHOP_HOST_TEST}     ${scheme}=http
+    ${sheet名称}    Set Variable    ${excel名称}
+    @{model}    Split String    ${excel名称}
+    Load Interface Templete    ${G_HTTP_PATH}/@{model}[0]/${excel名称}.xlsx    ${接口索引}
+    add_url_cookie    ;JSESSIONID=${G_SHOP_JSESSIONID}
+    ${response_status}    ${response_body}    Send Request
+    Set Global Variable    ${G_RESPONSE_STATUS}    ${response_status}
+    Set Global Variable    ${G_RESPONSE_BODY}    ${response_body}

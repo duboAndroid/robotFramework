@@ -1,0 +1,62 @@
+*** Settings ***
+Resource          0-设备端-http.txt
+
+*** Keywords ***
+获取预约订单列表
+    [Arguments]    ${page}=1
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_商城业务    index_booking_list
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /page    ${page}
+    发送请求
+    验证请求响应状态
+    Should Contain    ${G_RESPONSE_BODY}    "success":true
+
+获取预约订单详情
+    [Arguments]    ${order_id}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_商城业务    index_booking_item
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /orderID    "${order_id}"
+    发送请求
+    验证请求响应状态
+    Should Contain    ${G_RESPONSE_BODY}    "success":true
+
+确认接受
+    [Arguments]    ${order_id}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_商城业务    index_booking_sureAction
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /orderID    "${order_id}"
+    发送请求
+    验证请求响应状态    200
+    Should Contain    ${G_RESPONSE_BODY}    "success":true
+
+取消预约
+    [Arguments]    ${order_id}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_商城业务    index_booking_cancelAction
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /orderID    "${order_id}"
+    发送请求
+    验证请求响应状态    200
+    Should Contain    ${G_RESPONSE_BODY}    "success":true
+
+验证完成
+    [Arguments]    ${order_id}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_商城业务    index_booking_verifyAction
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /orderID    "${order_id}"
+    发送请求
+    验证请求响应状态
+    Should Contain    ${G_RESPONSE_BODY}    "success":true
+
+预约详情获取订单状态
+    [Documentation]    预约状态有：
+    ...    1、申请中
+    ...    2、已受理
+    ...    3、预约完成
+    ...    4、预约取消
+    ${status_value}    Get Json Value    ${G_RESPONSE_BODY}    /appointOrder/appointState/value
+    [Return]    ${status_value}

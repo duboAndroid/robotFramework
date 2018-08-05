@@ -1,0 +1,3 @@
+*** Settings ***
+Suite Setup       run keywords    商户管理后台-首页-HTTP.登录    AND    设备端-首页-Http.登录
+Resource          ../Keywords-公共/0-自定义关键字.txt

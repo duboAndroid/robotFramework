@@ -1,0 +1,31 @@
+*** Settings ***
+Resource          0-设备端-http.txt
+
+*** Keywords ***
+获取商品列表
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_商城业务    index_shopGoods_list
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+保存订单
+    [Arguments]    ${amount}    ${standardId}    ${total}    ${goodsname}
+    [Documentation]    amount(数量) ； standardId(单规格商品为0) ； total(总价-以分为单位) ； ${goodsname}(商品名，限制单一规格商品)
+    创建http上下文    ${G_POS_HOST_TEST}
+    加载接口模板    POS_商城业务    index_shopGoods_saveOrder
+    ${results}    查询sql    SELECT * FROM mall.mall_goods WHERE `name`='${goodsname}'
+    ${商品id}    set variable    ${results[0][0]}
+    ${商品name}    set variable    ${results[0][1]}
+    ${商品price}    set variable    ${results[0][2]}
+    ${商品standard}    set variable    ${results[0][17]}
+    修改Json格式的请求Body    /goods/0/amount    "${amount}"
+    修改Json格式的请求Body    /goods/0/id    "${商品id}"
+    修改Json格式的请求Body    /goods/0/name    "${商品name}"
+    修改Json格式的请求Body    /goods/0/price    "${商品price}"
+    修改Json格式的请求Body    /goods/0/standard    "${商品standard}"
+    修改Json格式的请求Body    /goods/0/standardId    ${standardId}
+    修改Json格式的请求Body    /total    ${total}
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态

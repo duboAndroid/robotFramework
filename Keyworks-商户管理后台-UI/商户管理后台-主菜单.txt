@@ -1,0 +1,24 @@
+*** Settings ***
+Resource          0-商户管理后台-UI.txt
+
+*** Keywords ***
+点击老客营销
+    通用-web.长等待点击元素    xpath=//li[@class='js_top_level_menu']/div[4]
+
+点击营业分析
+    通用-web.长等待点击元素    xpath=//li[@class='js_top_level_menu']/div[1]
+
+点击门店应用
+    通用-web.长等待点击元素    xpath=//li[@class='js_top_level_menu']/div[2]
+
+点击顾客数据
+    通用-web.长等待点击元素    xpath=//li[@class='js_top_level_menu']/div[3]
+
+点击新客营销
+    通用-web.长等待点击元素    xpath=//li[@class='js_top_level_menu']/div[5]
+
+点击引流推广
+    通用-web.长等待点击元素    xpath=//li[@class='js_top_level_menu']/div[6]
+
+点击商家中心
+    通用-web.长等待点击元素    xpath=//li[@class='js_top_level_menu']/div[7]

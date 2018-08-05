@@ -1,0 +1,2 @@
+*** Variables ***
+${测试环境}           test-a    # test-a/test-b/pre-release

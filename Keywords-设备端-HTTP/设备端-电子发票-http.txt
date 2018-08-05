@@ -1,0 +1,42 @@
+*** Settings ***
+Resource          0-设备端-http.txt
+
+*** Keywords ***
+拉取记录
+    [Arguments]    ${num}    ${page}    # 1-带开具，2-开具成功，3-开具失败
+    [Documentation]    {"page":1(页码),"status":1(1-待开具；2-开具成功；3-开具失败),"version":"1.0"}
+    创建http上下文    ${G_POS_HOST_TEST}
+    加载接口模板    POS_发票业务    index_get_einvoice_list
+    set request header    User-Agent    okhttp/2.5.0
+    加载设备端公共请求部分
+    修改json格式的请求body    /page    ${page}
+    修改json格式的请求body    /status    ${num}
+    发送请求
+    验证请求响应状态
+
+发票详情
+    [Arguments]    ${num}    # 发票单号
+    创建http上下文    ${G_POS_HOST_TEST}
+    加载接口模板    POS_发票业务    index_get_order_detail
+    加载设备端公共请求部分
+    修改json格式的请求body    /invoiceId    ${num}
+    发送请求
+    验证请求响应状态
+
+开发票条件检查
+    创建http上下文    ${G_POS_HOST_TEST}
+    加载接口模板    POS_发票业务    index_check_config
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+开具电子发票
+    [Arguments]    ${金额}    ${数量}
+    [Documentation]    金额以分为单位
+    创建http上下文    ${G_POS_HOST_TEST}
+    加载接口模板    POS_发票业务    index_create_invoice
+    加载设备端公共请求部分
+    修改json格式的请求body    /invoiceItems/0/itemAmount    ${金额}
+    修改json格式的请求body    /invoiceItems/0/itemCount    ${数量}
+    发送请求
+    验证请求响应状态

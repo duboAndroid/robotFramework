@@ -1,0 +1,182 @@
+*** Settings ***
+Resource          0-自定义关键字.txt
+
+*** Keywords ***
+查询sql
+    [Arguments]    ${sql}    ${db}=${DB_SAOFU_CONNECTION}
+    Connect To Database Using Custom Params    pymysql    ${db}
+    @{results}    Run Keyword And Continue On Failure    Query    ${sql}
+    Disconnect From Database
+    [Return]    @{results}
+
+执行sql
+    [Arguments]    ${sql}    ${db}=${DB_SAOFU_CONNECTION}
+    Connect To Database Using Custom Params    pymysql    ${db}
+    Run Keyword And Continue On Failure    Execute Sql String    ${sql}
+    Disconnect From Database
+
+通过卡券名称获取serial
+    [Arguments]    ${name}
+    ${result}    查询sql    SELECT serial FROM base_info WHERE title='${name}';
+    ${return}    Set Variable    ${result[0][0]}
+    [Return]    ${return}
+
+商城-通过商品名称获取商品id
+    [Arguments]    ${name}
+    ${result}    数据库.查询sql    SELECT id FROM mall_goods WHERE NAME = '${name}' AND del_flag = '0' ORDER BY update_time DESC    ${DB_MALL_CONNECTION}    #查询商品id
+    Comment    ${goods_id}    Set Variable    ${result[0][0]}
+    [Return]    ${result}
+
+商城-查询总订单金额
+    [Arguments]    ${type}=1,2,3    ${pay_type}=1,2,3,4    ${begin_date}=7天前    ${end_date}=昨天
+    [Documentation]    通过订单类别，支付方式，起止时间查询总订单金额
+    ...    type：
+    ...    默认全部：1,2,3
+    ...    1 配送订单，2 自提订单，3 店内订单
+    ...
+    ...    pay_type：
+    ...    默认全部：1,2,3,4
+    ...    1 微信支付，2 到店支付，3 货到付款，4 储值卡
+    ...
+    ...    begin_date
+    ...    例如：2017-08-28
+    ...
+    ...    end_date
+    ...    例如：2017-0903
+    ${yesterday}    查询sql    SELECT DATE_ADD(CURRENT_DATE,INTERVAL -1 DAY)    #查询昨天
+    ${end_date}    Set Variable If    '${end_date}'=='昨天'    ${yesterday[0][0]}
+    ${7day_before}    查询sql    SELECT DATE_ADD(CURRENT_DATE,INTERVAL -7 DAY)    #查询7天前
+    ${begin_date}    Set Variable If    '${begin_date}'=='7天前'    ${7day_before[0][0]}
+    ${result}    查询sql    SELECT FORMAT((SUM(mpo.deliver_fee)+SUM(po.total_fee))/100,2)\ FROM product_order po,mall_product_order mpo WHERE po.id = mpo.id AND po.shop_id = 42 AND mpo.type IN (${type}) AND mpo.pay_type IN (${pay_type}) AND mpo.create_date BETWEEN '${begin_date}' AND '${end_date}';    ${DB_MALL_CONNECTION}    #查询金额，单位为元，保留两位小数
+    ${sum}    Set Variable    ${result[0][0]}
+    [Return]    ${sum}
+
+商城-查询总订单数
+    [Arguments]    ${type}=1,2,3    ${pay_type}=1,2,3,4    ${begin_date}=7天前    ${end_date}=昨天
+    ${yesterday}    查询sql    SELECT DATE_ADD(CURRENT_DATE,INTERVAL -1 DAY)    #查询昨天
+    ${end_date}    Set Variable If    '${end_date}'=='昨天'    ${yesterday[0][0]}
+    ${7day_before}    查询sql    SELECT DATE_ADD(CURRENT_DATE,INTERVAL -7 DAY)    #查询
+    ${begin_date}    Set Variable If    '${begin_date}'=='7天前'    ${7day_before[0][0]}
+    ${result}    查询sql    SELECT COUNT(mpo.id) FROM product_order po,mall_product_order mpo WHERE po.id = mpo.id AND po.shop_id = 42 AND mpo.type IN (${type}) AND mpo.pay_type IN (${pay_type}) AND mpo.create_date BETWEEN '${begin_date}' AND '${end_date}';    ${DB_MALL_CONNECTION}
+    ${count}    Set Variable    ${result[0][0]}
+    [Return]    ${count}
+
+商城-查询平均每单金额
+    [Arguments]    ${type}=1,2,3    ${pay_type}=1,2,3,4    ${begin_date}=7天前    ${end_date}=昨天
+    ${yesterday}    查询sql    SELECT DATE_ADD(CURRENT_DATE,INTERVAL -1 DAY)    #查询昨天
+    ${end_date}    Set Variable If    '${end_date}'=='昨天'    ${yesterday[0][0]}
+    ${7day_before}    查询sql    SELECT DATE_ADD(CURRENT_DATE,INTERVAL -7 DAY)    #查询
+    ${begin_date}    Set Variable If    '${begin_date}'=='7天前'    ${7day_before[0][0]}
+    ${result}    查询sql    SELECT (SUM(mpo.deliver_fee)+SUM(po.total_fee))/COUNT(mpo.id) FROM product_order po,mall_product_order mpo WHERE po.id = mpo.id AND po.shop_id = 42 AND mpo.type IN (${type}) AND mpo.pay_type IN (${pay_type}) AND mpo.create_date BETWEEN '${begin_date}' AND '${end_date}';    ${DB_MALL_CONNECTION}
+    ${average}    Set Variable    ${result[0][0]}
+    #未保留两位小数
+    [Return]    ${average}
+
+通过手机号和商户id查找用户openId
+    [Arguments]    ${mobile}    ${shop_id}
+    ${result}    查询sql    SELECT channel_serial FROM `customer` WHERE mobile='${mobile}' AND shop_id = '${shop_id}'
+    ${openId}    Set Variable    ${result[0][0]}
+    [Return]    ${openId}
+
+通过商户id获取商户serial
+    [Arguments]    ${shop_id}
+    ${result}    查询sql    SELECT SERIAL FROM `shop` WHERE id = '${shop_id}'
+    ${serial}    Set Variable    ${result[0][0]}
+    [Return]    ${serial}
+
+通过门店名称获取shopBranchId
+    [Arguments]    ${shopBranchName}
+    ${result}    查询sql    SELECT id FROM shop_branch WHERE NAME ="${shopBranchName}"
+    ${shopBranchId}    Set Variable    ${result[0][0]}
+    [Return]    ${shopBranchId}
+    
+外卖-通过商户ID和商品分类名查询分类ID
+    [Arguments]    ${shop_id}    ${name}
+    ${result}    数据库.查询sql    SELECT id from waimai.waimai_goods_category WHERE name='${name}' and shop_id='${shop_id}'
+    ${categoryId}    set variable    ${result[0][0]}
+    [Return]    ${categoryId}
+
+外卖-根据商户ID、门店ID、分类名称、商品名称查询商品ID
+    [Arguments]    ${shop_id}    ${branch_id}    ${cataname}    ${goodsname}
+    ${cataid}    外卖-通过商户ID和商品分类名查询分类ID    ${shop_id}    ${cataname}
+    ${goodsID}    查询sql    SELECT id from waimai.waimai_goods where name="${goodsname}" and waimai_goods_catagory_id="${cataid}" AND shop_branch_id="${branch_id}"    #由商品名、分类id、门店id查询出商品id
+    ${goods_id}    set variable    ${goodsID[0][0]}
+    [Return]    ${goods_id}
+
+商城-通过商户ID和快递名查找快递ID
+    [Arguments]    ${shopid}    ${快递公司}
+    ${sdcid}    查询sql    SELECT id FROM saofu.shop_deliver_company WHERE `name`="${快递公司}" AND shop_id=${shopid}
+    ${sdc_id}    Set Variable    ${sdcid[0][0]}
+    [Return]    ${sdc_id}
+
+商城-通过订单ID查找商户ID
+    [Arguments]    ${订单ID}
+    ${id}    查询sql    SELECT shop_id FROM mall.product_order WHERE id=${订单ID}    #根据商户账号查询商户ID
+    ${shopid}    set variable    ${id[0][0]}
+    [Return]    ${shopid}
+
+智能小二-获取小二id
+    [Arguments]    ${sendXiaoerName}
+    ${result}    数据库.查询sql    SELECT id FROM marketing.xiaoer_base_config WHERE config_name = '${sendXiaoerName}' ORDER BY create_time DESC    #查询小二id
+    ${xiaoer_id}    Set Variable    ${result[0][0]}
+    [Return]    ${xiaoer_id}
+
+外卖-根据第三方单号查询到系统单号
+    [Arguments]    ${三方单号}
+    ${result}    查询sql    SELECT wai_mai_product_order_id FROM waimai.waimai_product_order_discount WHERE platform_order_id=${三方单号}
+    ${系统单号}    set variable    ${result[0][0]}
+    [Return]    ${系统单号}
+
+商城-通过商户ID查找取消原因ID
+    [Arguments]    ${shopid}    ${原因编号}=0
+    ${reason_id}    查询sql    SELECT id FROM mall.product_order_cancel_reason WHERE shop_id=${shopid}
+    ${reason_ID}    set variable    ${reason_id[${原因编号}][0]}
+    [Return]    ${reason_ID}
+
+外卖-根据第三方订单ID查找所属商户ID
+    [Arguments]    ${三方单号}
+    ${result}    查询sql    SELECT shop_id FROM waimai.waimai_product_order WHERE platform_order_id = ${三方单号}
+    ${shop_id}    Set Variable    ${result[0][0]}
+    [Return]    ${shop_id}
+
+根据操作员ID查找到设备所属商户ID和门店ID
+    [Arguments]    ${ID}=${G_POS_ID}
+    ${result}    查询sql    SELECT * FROM saofu.account_operator WHERE id=${G_POS_ID}
+    ${shop_id}    Set Variable    ${result[0][5]}
+    ${shop_branch_id}    Set Variable    ${result[0][4]}
+    [Return]    ${shop_id}    ${shop_branch_id}
+
+卡券-通过卡券名称获取基础信息
+    [Arguments]    ${name}    ${para}
+    [Documentation]    para：id、serial、shop_id
+    ${result}    查询sql    SELECT ${para} FROM base_info WHERE title='${name}';
+    ${return}    Set Variable    ${result[0][0]}
+    [Return]    ${return}
+
+卡券-通过手机号和商户id查找用户信息
+    [Arguments]    ${mobile}    ${shop_id}    ${para}
+    [Documentation]    customer表----para：member_id
+    ${result}    查询sql    SELECT ${para} FROM saofu.customer WHERE mobile='${mobile}' AND shop_id = '${shop_id}'
+    ${ret_value}    Set Variable    ${result[0][0]}
+    [Return]    ${ret_value}
+
+通过表名和已知列查找其他列数据
+    [Arguments]    ${table}    ${name}    ${value}    ${ret_name}
+    ${result}    查询sql    SELECT ${ret_name} FROM saofu.${table} WHERE ${name}='${value}'
+    ${ret_value}    Set Variable    ${result[0][0]}
+    [Return]    ${ret_value}
+
+卡券-通过手机号和商户id查找内存id
+    [Arguments]    ${mobile}    ${shop_id}=${G_商户id}
+    ${id}    卡券-通过手机号和商户id查找用户信息    ${mobile}    ${shop_id}    id
+    ${memberId}    通过表名和已知列查找其他列数据    customer_account    customer_id    ${id}    member_id
+    [Return]    ${memberId}
+
+卡券-获取已下线会员卡列表
+    [Arguments]    ${shop_id}=${G_商户id}
+    ${names}    查询sql    SELECT title FROM `base_info` where shop_id='${shop_id}' and card_type='0' and listing='2';
+    ${list}    Create List
+    ${count}    Get Length    ${names}
+    :FOR    ${i}    IN RANGE    ${count}
+    \    Append To List    ${list}    ${names[${i}][0]}
+    [Return]    ${list}

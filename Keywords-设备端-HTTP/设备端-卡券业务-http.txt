@@ -1,0 +1,31 @@
+*** Settings ***
+Resource          0-设备端-http.txt
+
+*** Keywords ***
+二维码修改会员积分
+    [Arguments]    ${qrCode}    ${bonus}    ${updateType}
+    [Documentation]    updateType:1-增加、2-减少
+    ${timeStamp}    获取当前时间戳
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_卡券业务    index_get_customer_customer_bonus_update_v37
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /code    "${qrCode}"
+    修改Json格式的请求Body    /bonus    ${bonus}
+    修改Json格式的请求Body    /updateType    ${updateType}
+    修改Json格式的请求Body    /timeStamp    ${timeStamp}
+    发送请求
+    验证请求响应状态
+
+二维码查询会员信息
+    [Arguments]    ${code}
+    创建http上下文    ${G_POS_HOST_TEST}
+    通用-http.加载接口模板    POS_卡券业务    index_get_customer_customer_query_v3
+    加载设备端公共请求部分
+    修改Json格式的请求Body    /code    "${code}"
+    发送请求
+    验证请求响应状态
+
+二维码查询会员信息-获取金额和积分
+    ${金额}    Get Json Value By Path    /customer/balance
+    ${积分}    Get Json Value By Path    /customer/bonus
+    [Return]    ${金额}    ${积分}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20180804 22:49:56.219" generator="Robot 3.0.4 (Python 2.7.9 on win32)">
+<errors>
+<msg timestamp="20180804 22:49:56.394" level="ERROR">Error in file 'E:\robotFramework\robot_project\robot项目示例\Keywords-公共\0-自定义关键字.txt': Importing test library 'ExcelLibrary' failed: ImportError: No module named ExcelLibrary
+Traceback (most recent call last):
+  None
+PYTHONPATH:
+  C:\Python27\python27.zip
+  C:\Python27\DLLs
+  C:\Python27\lib
+  C:\Python27\lib\plat-win
+  C:\Python27\lib\lib-tk
+  C:\Python27
+  C:\Python27\lib\site-packages
+  C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg
+  C:\Python27\lib\site-packages\docutils-0.14-py2.7.egg
+  C:\Python27\lib\site-packages\decorator-4.3.0-py2.7.egg
+  C:\Python27\lib\site-packages\lxml-2.3-py2.7-win-amd64.egg
+  C:\Python27\lib\site-packages\requests-2.19.1-py2.7.egg
+  C:\Python27\lib\site-packages\certifi-2018.4.16-py2.7.egg
+  C:\Python27\lib\site-packages\urllib3-1.23-py2.7.egg
+  C:\Python27\lib\site-packages\idna-2.7-py2.7.egg
+  C:\Python27\lib\site-packages\chardet-3.0.4-py2.7.egg
+  C:\Python27\lib\site-packages\wx-2.8-msw-unicode</msg>
+<msg timestamp="20180804 22:49:56.398" level="ERROR">Unexpected error: UnicodeDecodeError: 'ascii' codec can't decode byte 0xcf in position 80: ordinal not in range(128)
+Traceback (most recent call last):
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\utils\application.py", line 83, in _execute
+    rc = self.main(arguments, **options)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\run.py", line 445, in main
+    result = suite.run(settings)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\running\model.py", line 248, in run
+    self.visit(runner)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\model\testsuite.py", line 161, in visit
+    visitor.visit_suite(self)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\model\visitor.py", line 84, in visit_suite
+    if self.start_suite(suite) is not False:
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\running\runner.py", line 73, in start_suite
+    ns.handle_imports()
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\running\namespace.py", line 55, in handle_imports
+    self._handle_imports(self._imports)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\running\namespace.py", line 66, in _handle_imports
+    self._import(item)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\running\namespace.py", line 74, in _import
+    action(import_setting)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\running\namespace.py", line 87, in _import_resource
+    self._handle_imports(resource.imports)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\running\namespace.py", line 66, in _handle_imports
+    self._import(item)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\running\namespace.py", line 74, in _import
+    action(import_setting)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\running\namespace.py", line 128, in _import_library
+    import_setting.alias, self.variables)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\running\importer.py", line 42, in import_library
+    lib = TestLibrary(name, args, variables, create_handlers=False)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\running\testlibraries.py", line 50, in TestLibrary
+    return_source=True)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\utils\importer.py", line 72, in import_class_or_module
+    self._raise_import_failed(name, err)
+  File "C:\Python27\lib\site-packages\robotframework-3.0.4-py2.7.egg\robot\utils\importer.py", line 109, in _raise_import_failed
+    raise DataError('\n'.join(msg))</msg>
+</errors>
+</robot>

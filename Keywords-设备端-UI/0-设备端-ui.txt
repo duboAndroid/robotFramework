@@ -1,0 +1,2 @@
+*** Settings ***
+Resource          ../Keywords-公共/0-自定义关键字.txt

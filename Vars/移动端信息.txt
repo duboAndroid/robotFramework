@@ -1,0 +1,8 @@
+*** Variables ***
+${G_REMOTE_URL}    http://127.0.0.1:4723/wd/hub    # Appium服务地址
+${G_PLATFORM_NAME}    Android    # Android \ Or \ IOS
+${G_PLATFORM_VERSION}    4.4.2    # 手机版本
+${G_DEVICE_NAME}    "127.0.0.1:62001"    # adb \ devices
+${G_WEIXIN_ACTIVITY}    com.tencent.mm.ui.LauncherUI    # 启动的Splash界面
+${G_WEIXIN_PACKAGE}    com.tencent.mm    # 包名
+${TestVariable}    TestVariable    # TestVariable

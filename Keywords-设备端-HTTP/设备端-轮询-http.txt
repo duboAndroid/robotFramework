@@ -1,0 +1,50 @@
+*** Settings ***
+Resource          0-设备端-http.txt
+
+*** Keywords ***
+数据中心曲线图
+    创建http上下文    ${G_POS_HOST_TEST}
+    加载接口模板    POS_轮询    index_marketing_trade_count
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+数据中心统计表
+    创建http上下文    ${G_POS_HOST_TEST}
+    加载接口模板    POS_轮询    index_marketing_stat_business_data
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+外卖轮询
+    创建http上下文    ${G_POS_HOST_TEST}
+    加载接口模板    POS_轮询    index_porder_pollquery
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+配置中心轮询
+    创建http上下文    ${G_POS_HOST_TEST}
+    加载接口模板    POS_轮询    index_config_center_get_config
+    修改Json格式的请求Body    /md5    "6745d9d78b9d3965e9eb7e36c046eebc"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+消息推送检测
+    [Arguments]    ${clientId}
+    [Documentation]    CID 在设备的消息检测栏目可看到，目前没找到办法得到
+    创建http上下文    ${G_POS_HOST_TEST}
+    加载接口模板    POS_轮询    index_push_gt_getClientIdStatus
+    修改Json格式的请求Body    /clientId    "${clientId}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态
+
+注册推送
+    创建http上下文    ${G_POS_HOST_TEST}
+    加载接口模板    POS_轮询    index_push_gt_bind
+    修改Json格式的请求Body    /clientId    "${clientId}"
+    加载设备端公共请求部分
+    发送请求
+    验证请求响应状态

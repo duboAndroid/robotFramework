@@ -1,0 +1,353 @@
+*** Settings ***
+Resource          0-老客营销.txt
+
+*** Variables ***
+${table_活动券}      xpath=//*[@id="tab-1"]/div[2]/table
+
+*** Keywords ***
+上传描述图片
+    [Arguments]    ${描述图片}
+    通用-web.长等待元素显示    xpath=//*[@id="detailsLoadPic"]/div/div[2]/span[1]
+    ${path}    Normalize Path    ${G_Tools路径}\\老客营销\\${描述图片}
+    Choose File    xpath=//*[@id="detailsLoadPic"]/div/div[2]/span[1]/input    ${path}
+
+代金券在线使用
+    通用-web.长等待点击元素    xpath=//*[@id="cashScope"]
+
+使用提醒
+    [Arguments]    ${使用提醒}
+    通用-web.长等待输入文本    xpath=//*[@id="fortip"]    ${使用提醒}
+
+使用时间
+    通用-web.长等待点击元素    xpath=//span[text()='周五']
+
+使用说明
+    [Arguments]    ${使用说明}
+    通用-web.长等待输入文本    xpath=//*[@id="descriptionTxt"]    ${使用说明}
+
+保存成功后返回到列表
+    通用-web.长等待元素显示    xpath=//*[@id="tab-1"]/div[1]/form/div[1]/a
+
+允许微信转赠
+    通用-web.长等待点击元素    xpath=//*[@id="branch-list"]/div/label[1]/span
+
+全部门店
+    通用-web.长等待点击元素    xpath=//*[@id="branch-list"]/div/label[1]/span
+
+创建代金券
+    ${random}    Generate Random String    5    [NUMBERS]
+    ${名称}    Set Variable    auto${random}
+    商户管理后台-主菜单.点击老客营销
+    优惠券管理-活动券.点击卡券管理-活动券
+    优惠券管理-活动券.点击制作优惠券
+    优惠券管理-活动券.选择背景颜色
+    优惠券管理-活动券.输入券名称    ${名称}
+    优惠券管理-活动券.选择代金券
+    优惠券管理-活动券.输入减免金额    3
+    优惠券管理-活动券.输入启用金额    3.3
+    优惠券管理-活动券.叠加使用
+    优惠券管理-活动券.代金券在线使用
+    #固定日期
+    优惠券管理-活动券.固定时长    \    5
+    优惠券管理-活动券.批量核销限制值    10
+    优惠券管理-活动券.使用提醒    结算时出示给服务员
+    优惠券管理-活动券.使用说明    xxxxxx
+    优惠券管理-活动券.客服电话    0755-8989889
+    优惠券管理-活动券.上传描述图片    timg3.jpg
+    优惠券管理-活动券.描述文字    额外人未人
+    优惠券管理-活动券.使用时间
+    优惠券管理-活动券.全部门店
+    优惠券管理-活动券.同步到微信卡包
+    优惠券管理-活动券.允许微信转赠
+    优惠券管理-活动券.点击保存
+    优惠券管理-活动券.保存成功后返回到列表
+    [Return]    ${名称}
+
+创建折扣券
+    ${random}    Generate Random String    5    [NUMBERS]
+    ${名称}    Set Variable    auto${random}
+    商户管理后台-主菜单.点击老客营销
+    优惠券管理-活动券.点击卡券管理-活动券
+    优惠券管理-活动券.点击制作优惠券
+    优惠券管理-活动券.选择背景颜色
+    优惠券管理-活动券.输入券名称    ${名称}
+    优惠券管理-活动券.选择折扣券
+    优惠券管理-活动券.输入折扣    0.8
+    优惠券管理-活动券.折扣券在线使用
+    优惠券管理-活动券.固定日期
+    优惠券管理-活动券.使用提醒    结算时出示给服务员
+    优惠券管理-活动券.使用说明    xxxxxx
+    优惠券管理-活动券.客服电话    0755-8989889
+    优惠券管理-活动券.上传描述图片    timg3.jpg
+    优惠券管理-活动券.描述文字    额外人未人
+    优惠券管理-活动券.使用时间
+    优惠券管理-活动券.全部门店
+    优惠券管理-活动券.同步到微信卡包
+    优惠券管理-活动券.允许微信转赠
+    优惠券管理-活动券.点击保存
+    优惠券管理-活动券.保存成功后返回到列表
+    [Return]    ${名称}
+
+创建礼品券
+    ${random}    Generate Random String    5    [NUMBERS]
+    ${名称}    Set Variable    auto${random}
+    商户管理后台-主菜单.点击老客营销
+    优惠券管理-活动券.点击卡券管理-活动券
+    优惠券管理-活动券.点击制作优惠券
+    优惠券管理-活动券.选择背景颜色
+    优惠券管理-活动券.输入券名称    ${名称}
+    优惠券管理-活动券.选择礼品券
+    优惠券管理-活动券.输入礼品名称    发顺丰
+    优惠券管理-活动券.固定日期
+    优惠券管理-活动券.批量核销限制值    10
+    优惠券管理-活动券.使用提醒    结算时出示给服务员
+    优惠券管理-活动券.使用说明    xxxxxx
+    优惠券管理-活动券.客服电话    0755-8989889
+    优惠券管理-活动券.上传描述图片    timg3.jpg
+    优惠券管理-活动券.描述文字    额外人未人
+    优惠券管理-活动券.使用时间
+    优惠券管理-活动券.全部门店
+    优惠券管理-活动券.同步到微信卡包
+    优惠券管理-活动券.允许微信转赠
+    优惠券管理-活动券.点击保存
+    优惠券管理-活动券.保存成功后返回到列表
+    [Return]    ${名称}
+
+创建通用券
+    ${random}    Generate Random String    5    [NUMBERS]
+    ${名称}    Set Variable    auto${random}
+    商户管理后台-主菜单.点击老客营销
+    优惠券管理-活动券.点击卡券管理-活动券
+    优惠券管理-活动券.点击制作优惠券
+    优惠券管理-活动券.选择背景颜色
+    优惠券管理-活动券.输入券名称    ${名称}
+    优惠券管理-活动券.选择通用券
+    优惠券管理-活动券.输入副标题    3333dsfs
+    优惠券管理-活动券.固定日期
+    优惠券管理-活动券.批量核销限制值    10
+    优惠券管理-活动券.使用提醒    结算时出示给服务员
+    优惠券管理-活动券.使用说明    xxxxxx
+    优惠券管理-活动券.详情描述    dfdsda
+    优惠券管理-活动券.客服电话    0755-8989889
+    优惠券管理-活动券.上传描述图片    timg3.jpg
+    优惠券管理-活动券.描述文字    额外人未人
+    优惠券管理-活动券.使用时间
+    优惠券管理-活动券.全部门店
+    优惠券管理-活动券.同步到微信卡包
+    优惠券管理-活动券.允许微信转赠
+    优惠券管理-活动券.点击保存
+    优惠券管理-活动券.保存成功后返回到列表
+    [Return]    ${名称}
+
+删除
+    [Arguments]    ${名称}    ${确定}=
+    优惠券管理-活动券.操作活动券    ${名称}    删除
+    Run Keyword if    '${确定}'==''    通用-web.长等待点击元素    xpath=//a[@class='btn btn_oranges_primary']
+    Run keyword if    '${确定}'!=''    通用-web.长等待点击元素    xpath=//a[@class='btn btn_default_primary']
+    通用-web.长等待元素显示    //a[text()='制作活动券']
+    sleep    3s
+    优惠券管理-活动券.点击卡券管理-活动券
+
+取消
+    通用-web.长等待点击元素    xpath=//*[@id="close"]
+
+叠加使用
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div[2]/div[5]/div/div[1]/div[3]/div/input[1]
+
+同步到微信卡包
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div[2]/div[15]/div/div/div/label/span
+
+固定日期
+    [Arguments]    ${day}=10
+    #输入开始时间
+    ${currenttime}    Get Current Date
+    ${Splittime}    Split String    ${currenttime}    ${SPACE}
+    Execute Javascript    document.getElementById('dateInfoBeginTimestamp').value="${Splittime[0]}";
+    #输入结束时间
+    ${overtime}    Get Current Date    increment=+${day} day
+    ${Splittime}    Split String    ${overtime}    ${SPACE}
+    Execute Javascript    document.getElementById('dateInfoEndTimestamp').value="${Splittime[0]}";
+
+固定时长
+    [Arguments]    ${生效日期}=    ${有效期}=
+    通用-web.长等待点击元素    xpath=//input[@data='2']
+    Run Keyword If    '${生效日期}'!=''    通用-web.长等待输入文本    xpath=//*[@id="fixedBeginTerm"]    ${生效日期}
+    Run Keyword If    '${有效期}'!=''    通用-web.长等待输入文本    xpath=//*[@id="dateInfoFixedTerm"]    ${有效期}
+
+客服电话
+    [Arguments]    ${phone}
+    通用-web.长等待输入文本    xpath=//*[@id="servicePhone"]    ${phone}
+
+批量核销限制值
+    [Arguments]    ${name}
+    通用-web.长等待输入文本    xpath=//*[@id="batchVerifyLimit"]    ${name}
+
+折扣券在线使用
+    通用-web.长等待点击元素    xpath=//*[@id="discountScope"]
+
+描述文字
+    [Arguments]    ${描述文字}
+    通用-web.长等待输入文本    xpath=//*[@id="descriptive-text"]    ${描述文字}
+
+操作活动券
+    [Arguments]    ${名称}    ${操作}
+    [Documentation]    操作：编辑,删除
+    ${row_table}    表格.翻页查找数据    ${table_活动券}    ${名称}    1
+    ${row_tbody}    Evaluate    int(${row_table})-1
+    通用-web.长等待点击元素    ${table_活动券}/tbody/tr[${row_tbody}]/td[6]/a[text()='${操作}']
+    [Return]    ${row_tbody}
+
+点击保存
+    通用-web.长等待点击按钮    保存
+
+点击制作优惠券
+    通用-web.长等待点击元素    xpath=//*[@id="body-content"]/div[1]/div/div/div[1]/div/ul/li[2]/a
+    通用-web.长等待点击元素    xpath=//*[@id="tab-1"]/div[1]/form/div[1]/a
+
+点击卡券管理-活动券
+    通用-web.长等待点击元素    xpath=//*[@id="page-wrapper"]/ul/li[3]/a/span[1]
+    通用-web.长等待点击元素    xpath=//*[@id="page-wrapper"]/ul/li[3]/ul/li[2]/a
+
+点击活动券
+    通用-web.长等待点击元素    xpath=//*[@id="body-content"]/div[1]/div/div/div[1]/div/ul/li[2]/a
+
+编辑活动券
+    [Arguments]    ${名称}
+    优惠券管理-活动券.操作活动券    ${名称}    编辑
+
+详情描述
+    [Arguments]    ${详情描述}
+    通用-web.长等待输入文本    xpath=//*[@id="tong_scrible_input"]    ${详情描述}
+
+输入减免金额
+    [Arguments]    ${输入减免金额}
+    通用-web.长等待输入文本    xpath=//*[@id="reduceCost_input"]    ${输入减免金额}
+
+输入券名称
+    [Arguments]    ${name}
+    通用-web.长等待输入文本    xpath=//*[@id="member"]    ${name}
+
+输入副标题
+    [Arguments]    ${副标题}
+    通用-web.长等待输入文本    xpath=//*[@id="subTitle"]    ${副标题}
+
+输入启用金额
+    [Arguments]    ${输入起用金额}
+    通用-web.长等待输入文本    xpath=//*[@id="cashLeastCost"]    ${输入起用金额}
+
+输入折扣
+    [Arguments]    ${折扣}
+    通用-web.长等待输入文本    xpath=//*[@id="discount_input"]    ${折扣}
+
+输入框不可更改项2
+    [Arguments]    ${xpath}
+    Selenium2Library.Page Should Contain Element    ${xpath}[@disabled='disabled']
+
+输入礼品名称
+    [Arguments]    ${礼品名称}
+    通用-web.长等待输入文本    xpath=//*[@id="gift"]    ${礼品名称}
+
+选择代金券
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div[2]/div[4]/div/div/a[1]
+
+选择折扣券
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div[2]/div[4]/div/div/a[2]
+
+选择礼品券
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div[2]/div[4]/div/div/a[3]
+
+选择背景颜色
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div[2]/div[2]/div/p/span[2]
+
+选择通用券
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div[2]/div[4]/div/div/a[4]
+
+选择部分门店
+    通用-web.长等待点击元素    xpath=//*[@id="branch-list"]/div/label[2]/span
+    通用-web.长等待点击元素    xpath=//*[@id="branch_list"]/div[4]
+    通用-web.长等待点击元素    xpath=//*[@id="branch"]/div/div/div/div[2]/div[4]/div/button[1]
+
+通用券不可修改
+    商户管理后台-主菜单.点击老客营销
+    优惠券管理-活动券.点击卡券管理-活动券
+    优惠券管理-活动券.点击活动券
+    优惠券管理-活动券.编辑活动券    ${G_活动券-通用券}
+    通用-web.长等待元素显示    xpath=//*[@id='member']
+    优惠券管理-活动券.验证输入框不可改    xpath=//*[@id='member']
+    通用-web.长等待元素显示    xpath=//input[@id='subTitle']
+    优惠券管理-活动券.输入框不可更改项2    xpath=//input[@id='subTitle']
+
+通用券可修改
+    商户管理后台-主菜单.点击老客营销
+    优惠券管理-活动券.点击卡券管理-活动券
+    优惠券管理-活动券.点击活动券
+    优惠券管理-活动券.编辑活动券    ${G_活动券-通用券}
+    通用-web.长等待元素显示    xpath=//input[@id='fortip']
+    优惠券管理-活动券.验证输入框可以修改    xpath=//input[@id='fortip']
+    通用-web.长等待元素显示    xpath=//textarea[@id='descriptionTxt']
+    优惠券管理-活动券.验证输入框可以修改    xpath=//textarea[@id='descriptionTxt']
+    通用-web.长等待元素显示    xpath=//textarea[@id='tong_scrible_input']
+    优惠券管理-活动券.验证输入框可以修改    xpath=//textarea[@id='tong_scrible_input']
+
+通过名称获取券信息
+    [Arguments]    ${名称}    ${券类型}=    ${有效期}=    ${已领数量}=    ${已核销}=
+    表格.翻页查找数据    ${table_活动券}    ${名称}    1
+    ${ret_券类型}    表格.通过已知列数据查找其他列数据    ${table_活动券}    ${名称}    1    2
+    Run Keyword If    '${券类型}'!=''    should Be Equal    ${券类型}    ${ret_券类型}
+    ${ret_有效期}    表格.通过已知列数据查找其他列数据    ${table_活动券}    ${名称}    1    3
+    Run Keyword If    '${有效期}'!=''    Should Be Equal    ${有效期}    ${ret_有效期}
+    ${ret_已领数量}    表格.通过已知列数据查找其他列数据    ${table_活动券}    ${名称}    1    4
+    Run Keyword If    '${已领数量}'!=''    Should Be Equal    ${已领数量}    ${ret_已领数量}
+    ${ret_已核销}    表格.通过已知列数据查找其他列数据    ${table_活动券}    ${名称}    1    5
+    Run Keyword If    '${已核销}'!=''    Should Be Equal    ${已核销}    ${ret_已核销}
+    [Return]    ${名称}    ${ret_券类型}    ${ret_有效期}    ${ret_已领数量}    ${ret_已核销}
+
+验证代金券不可修改项
+    商户管理后台-主菜单.点击老客营销
+    优惠券管理-活动券.点击卡券管理-活动券
+    优惠券管理-活动券.点击活动券
+    优惠券管理-活动券.编辑活动券    ${G_活动券-代金券}
+    通用-web.长等待元素显示    xpath=//*[@id='member']
+    优惠券管理-活动券.验证输入框不可改    xpath=//*[@id='member']
+    通用-web.长等待元素显示    xpath=//input[@id='reduceCost_input']
+    优惠券管理-活动券.验证输入框不可改    xpath=//input[@id='reduceCost_input']
+    通用-web.长等待元素显示    xpath=//input[@id='cashLeastCost']
+    优惠券管理-活动券.验证输入框不可改    xpath=//input[@id='cashLeastCost']
+
+验证代金券可以修改项
+    商户管理后台-主菜单.点击老客营销
+    优惠券管理-活动券.点击卡券管理-活动券
+    优惠券管理-活动券.点击活动券
+    优惠券管理-活动券.编辑活动券    ${G_活动券-代金券}
+    通用-web.长等待元素显示    xpath=//input[@id='fortip']
+    优惠券管理-活动券.验证输入框可以修改    xpath=//input[@id='fortip']
+    通用-web.长等待元素显示    xpath=//textarea[@id='descriptionTxt']
+    优惠券管理-活动券.验证输入框可以修改    xpath=//textarea[@id='descriptionTxt']
+
+验证折扣券不可修改项
+    商户管理后台-主菜单.点击老客营销
+    优惠券管理-活动券.点击卡券管理-活动券
+    优惠券管理-活动券.点击活动券
+    优惠券管理-活动券.编辑活动券    ${G_活动券-折扣券}
+    通用-web.长等待元素显示    xpath=//input[@id='member']
+    优惠券管理-活动券.验证输入框不可改    xpath=//input[@id='member']
+    通用-web.长等待元素显示    xpath=//input[@id='discount_input']
+    优惠券管理-活动券.验证输入框不可改    xpath=//input[@id='discount_input']
+
+验证折扣券可以修改
+    商户管理后台-主菜单.点击老客营销
+    优惠券管理-活动券.点击卡券管理-活动券
+    优惠券管理-活动券.点击活动券
+    优惠券管理-活动券.编辑活动券    ${G_活动券-折扣券}
+    通用-web.长等待元素显示    xpath=//input[@id='fortip']
+    优惠券管理-活动券.验证输入框可以修改    xpath=//input[@id='fortip']
+    通用-web.长等待元素显示    xpath=//textarea[@id='descriptionTxt']
+    优惠券管理-活动券.验证输入框可以修改    xpath=//textarea[@id='descriptionTxt']
+
+验证输入框不可改
+    [Arguments]    ${xpath}
+    Selenium2Library.Page Should Contain Element    ${xpath}[@readonly='readonly']
+
+验证输入框可以修改
+    [Arguments]    ${xpath}
+    Selenium2Library.Page Should not Contain Element    ${xpath}[@readonly='readonly']

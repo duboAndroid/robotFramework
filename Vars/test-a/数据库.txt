@@ -1,0 +1,5 @@
+*** Variables ***
+${DB_HOST}        ${EMPTY}
+${DB_PORT}        3306
+${DB_SAOFU_CONNECTION}    database='**', user='test', password='**', host='${DB_HOST}', port=${DB_PORT},charset='utf8'
+${DB_MALL_CONNECTION}    database='mall', user='test', password='**', host='${DB_HOST}', port=${DB_PORT},charset='utf8'

@@ -1,0 +1,6 @@
+*** Settings ***
+Resource          0-商户管理后台-http.txt
+
+*** Keywords ***
+加载商户后台公共请求部分
+    add_url_cookie    ;JSESSIONID=${G_SHOP_JSESSIONID}

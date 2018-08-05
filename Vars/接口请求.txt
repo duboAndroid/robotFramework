@@ -1,0 +1,7 @@
+*** Variables ***
+${G_HTTP_PATH}    ${CURDIR}\\..\\Interface-接口库    # 接口库存放路径
+${G_SHOP_JSESSIONID}    ${EMPTY}    # 商户管理的登录JSESSIONID
+${G_OEM_JSESSIONID}    ${EMPTY}    # OEM的登录JSESSIONID
+${G_POS_TOKEN}    ${EMPTY}    # 设备端的登录Token
+${G_RESPONSE_BODY}    \    # 存放接口响应body
+${G_RESPONSE_STATUS}    \    # 存放接口响应status

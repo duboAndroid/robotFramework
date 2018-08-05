@@ -1,0 +1,6 @@
+*** Variables ***
+${G_SHOP_HOST_TEST}    \    # 商户管理测试环境HOST
+${G_MARKETING_HOST_TEST}    \    #拉客、智能小二HOST
+${G_OEM_HOST_TEST}    \    # OEM测试环境
+${G_WEIXIN_HOST_TEST}    \    # 微信公众号测试环境HOST
+${G_POS_HOST_TEST}    \    # 设备测试环境HOST

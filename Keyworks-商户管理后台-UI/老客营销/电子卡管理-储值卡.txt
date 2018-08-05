@@ -1,0 +1,287 @@
+*** Settings ***
+Resource          0-老客营销.txt
+
+*** Variables ***
+${table_储值卡}      xpath=//*[@id="tab-1"]/div[2]/table
+
+*** Keywords ***
+上传封面图
+    [Arguments]    ${封面图}
+    通用-web.长等待元素显示    xpath=//*[@id="coverMapLoadPic"]/div/div[2]/span[1]
+    ${path}    Normalize Path    ${G_Tools路径}\\老客营销\\${封面图}
+    Choose File    xpath=//*[@id="coverMapLoadPic"]/div/div[2]/span[1]/input    ${path}
+
+上传描述图片
+    [Arguments]    ${描述图片}
+    通用-web.长等待元素显示    xpath=//*[@id="detailsLoadPic"]/div/div[2]/span[1]
+    ${path}    Normalize Path    ${G_Tools路径}\\老客营销\\${描述图片}
+    Choose File    xpath=//*[@id="detailsLoadPic"]/div/div[2]/span[1]/input    ${path}
+
+上架
+    [Arguments]    ${名称}    ${确定}=
+    电子卡管理-储值卡.通过名称操作储值卡    ${名称}    上架
+    Run Keyword If    '${确定}'==''    通用-web.长等待点击元素    xpath=/html/body/div[1]/div/div[2]/div[2]/a[text()='确定']
+    Run Keyword If    '${确定}'!=''    通用-web.长等待点击元素    xpath=/html/body/div[1]/div/div[2]/div[2]/a[text()='取消']
+    sleep    1s
+
+下架
+    [Arguments]    ${名称}    ${确定}=
+    电子卡管理-储值卡.通过名称操作储值卡    ${名称}    下架
+    Run Keyword If    '${确定}'==''    通用-web.长等待点击元素    xpath=/html/body/div[1]/div/div[2]/div[2]/a[text()='确定']
+    Run Keyword If    '${确定}'!=''    通用-web.长等待点击元素    xpath=/html/body/div[1]/div/div[2]/div[2]/a[text()='取消']
+    sleep    1s
+
+分享
+    [Arguments]    ${名称}    ${导出}=    ${复制}=
+    ${row_table}    电子卡管理-储值卡.通过名称操作储值卡    ${名称}    分享
+    ${row_tbody}    Evaluate    int(${row_table})-1
+    Run Keyword If    '${导出}'!=''    通用-web.长等待点击元素    ${table_储值卡}/tbody/tr[${row_tbody}]/td[8]/div/div/a[1]
+    Run Keyword If    '${复制}'!=''    通用-web.长等待点击元素    ${table_储值卡}/tbody/tr[${row_tbody}]/td[8]/div/div/a[2]
+
+删除
+    [Arguments]    ${名称}    ${确定}=
+    电子卡管理-储值卡.通过名称操作储值卡    ${名称}    删除
+    Run Keyword If    '${确定}'==''    通用-web.长等待点击元素    xpath=/html/body/div[1]/div/div[2]/div[2]/a[text()='确定']
+    Run Keyword If    '${确定}'!=''    通用-web.长等待点击元素    xpath=/html/body/div[1]/div/div[2]/div[2]/a[text()='取消']
+    通用-web.长等待元素显示    //a[text()='储值卡管理']
+    老客营销-菜单.点击电子卡管理
+    电子卡管理-储值卡.点击储值卡管理
+
+清除封面图
+    通用-web.长等待点击元素    xpath=//*[@id="coverMapLoadPic"]/div/div[2]/span[3]
+
+清除描述图片
+    通用-web.长等待点击元素    xpath=//*[@id="detailsLoadPic"]/div/div[2]/span[2]
+
+点击仅保存
+    通用-web.长等待点击按钮    仅保存
+
+点击保存并上架
+    通用-web.长等待点击按钮    保存并上架
+
+点击储值卡管理
+    通用-web.长等待点击元素    xpath=//a[text()='储值卡管理']
+
+点击制作储值卡
+    通用-web.长等待点击元素    xpath=//*[@id="tab-1"]/div[1]/div/a
+
+点击取消
+    通用-web.长等待点击元素    xpath=//*[@id="close"]
+
+点击同步到微信卡包
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div[2]/div[16]/div/div/div/label/span
+
+编辑
+    [Arguments]    ${名称}
+    电子卡管理-储值卡.通过名称操作储值卡    ${名称}    编辑
+
+输入上架数量
+    [Arguments]    ${上架数量}
+    通用-web.长等待输入文本    xpath=//*[@id="card-form"]/div/div[2]/div[8]/div/input    ${上架数量}
+
+输入使用提醒
+    [Arguments]    ${使用提醒}
+    通用-web.长等待输入文本    xpath=//*[@id="fortip"]    ${使用提醒}
+
+输入使用说明
+    [Arguments]    ${使用说明}
+    通用-web.长等待输入文本    xpath=//*[@id="descriptionTxt"]    ${使用说明}
+
+输入储值卡名称
+    [Arguments]    ${名称}
+    通用-web.长等待输入文本    xpath=//*[@id="member"]    ${名称}
+
+输入副标题
+    [Arguments]    ${副标题}
+    ${status}    Run Keyword And Return Status    Selenium2Library.Page Should Contain    添加副标题
+    Run Keyword If    '${status}'='True'    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div[2]/div[4]/div/label
+    通用-web.长等待输入文本    xpath=//*[@id="subTitle"]    ${副标题}
+
+输入售价
+    [Arguments]    ${售价}
+    通用-web.长等待输入文本    xpath=//*[@id="price"]    ${售价}
+
+输入客服电话
+    [Arguments]    ${客服电话}
+    通用-web.长等待输入文本    xpath=//*[@id="servicePhone"]    ${客服电话}
+
+输入描述文字
+    [Arguments]    ${描述文字}
+    通用-web.长等待输入文本    xpath=//*[@id="descriptive-text"]    ${描述文字}
+
+输入金额
+    [Arguments]    ${金额}
+    通用-web.长等待输入文本    xpath=//*[@id="balance"]    ${金额}
+
+输入限购次数
+    [Arguments]    ${限购次数}
+    通用-web.长等待输入文本    xpath=//*[@id="card-form"]/div/div[2]/div[12]/div/input    ${限购次数}
+
+选择全部门店
+    通用-web.长等待点击元素    xpath=//*[@id="branch-list"]/div/label[1]/span
+
+选择固定日期区间
+    [Arguments]    ${day}=10
+    #输入开始时间
+    ${currenttime}    Get Current Date
+    ${Splittime}    Split String    ${currenttime}    ${SPACE}
+    Execute Javascript    document.getElementById('dateInfoBeginTimestamp').value="${Splittime[0]}";
+    #输入结束时间
+    ${overtime}    Get Current Date    increment=+${day} day
+    ${Splittime}    Split String    ${overtime}    ${SPACE}
+    Execute Javascript    document.getElementById('dateInfoEndTimestamp').value="${Splittime[0]}";
+
+选择固定时长
+    [Arguments]    ${生效日期}=    ${有效期}=
+    通用-web.长等待点击元素    xpath=//input[@data='2']
+    Run Keyword If    '${生效日期}'!=''    通用-web.长等待输入文本    xpath=//*[@id="fixedBeginTerm"]    ${生效日期}
+    Run Keyword If    '${有效期}'!=''    通用-web.长等待输入文本    xpath=//*[@id="dateInfoFixedTerm"]    ${有效期}
+
+选择背景颜色
+    [Arguments]    ${编号}
+    [Documentation]    编号从1开始
+    通用-web.长等待点击元素    xpath=//*[@id="card-form"]/div/div[2]/div[2]/div/p/span[${编号}]
+
+选择部分门店
+    #点击部分门店
+    通用-web.长等待点击元素    xpath=//*[@id="branch-list"]/div/label[2]/span
+    #选择门店 测试最近距离
+    通用-web.长等待点击元素    xpath=//*[@id="branch_list"]/div[2]/label/span
+    通用-web.长等待点击元素    xpath=//*[@id="branch_list"]/div[7]/label/span
+    #保存
+    通用-web.长等待点击元素    xpath=//button[@class='btn btn_lv_primary']
+
+通过名称操作储值卡
+    [Arguments]    ${名称}    ${操作}
+    # 先翻页查找
+    ${row_table}    表格.翻页查找数据    ${table_储值卡}    ${名称}    1
+    #返回的row从标题行开始算，而xpath要从数据行，所以要减一
+    ${row_tbody}    Evaluate    int(${row_table})-1
+    通用-web.长等待点击元素    ${table_储值卡}/tbody/tr[${row_tbody}]/td[8]/div/a[text()='${操作}']
+    [Return]    ${row_tbody}
+
+通过名称获取储值卡信息
+    [Arguments]    ${名称}    ${有效期}=    ${金额}=    ${售价}=    ${出售数量}=    ${剩余数量}=
+    ...    ${状态}=
+    ${ret_有效期}    表格.通过已知列数据查找其他列数据    ${table_储值卡}    ${名称}    1    2
+    Run Keyword If    '${有效期}'!=''    Should Be Equal    ${有效期}    ${ret_有效期}
+    ${ret_金额}    表格.通过已知列数据查找其他列数据    ${table_储值卡}    ${名称}    1    3
+    Run Keyword If    '${金额}'!=''    Should Be Equal    ${金额}    ${ret_金额}
+    ${ret_售价}    表格.通过已知列数据查找其他列数据    ${table_储值卡}    ${名称}    1    4
+    Run Keyword If    '${售价}'!=''    Should Be Equal    ${售价}    ${ret_售价}
+    ${ret_出售数量}    表格.通过已知列数据查找其他列数据    ${table_储值卡}    ${名称}    1    5
+    Run Keyword If    '${出售数量}'!=''    Should Be Equal    ${出售数量}    ${ret_出售数量}
+    ${ret_剩余数量}    表格.通过已知列数据查找其他列数据    ${table_储值卡}    ${名称}    1    6
+    Run Keyword If    '${剩余数量}'!=''    Should Be Equal    ${剩余数量}    ${ret_剩余数量}
+    ${ret_状态}    表格.通过已知列数据查找其他列数据    ${table_储值卡}    ${名称}    1    7
+    Run Keyword If    '${状态}'!=''    Should Be Equal    ${状态}    ${ret_状态}
+    [Return]    ${ret_有效期}    ${ret_金额}    ${ret_售价}    ${ret_出售数量}    ${ret_剩余数量}    ${ret_状态}
+
+验证封面设计规范链接
+    通用-web.长等待点击元素    xpath=//a[text()='封面设计规范']
+    sleep    3s
+    ${titles}    Get Window Titles
+    Run Keyword And Continue On Failure    Selenium2Library.Should Contain    ${titles}    微信公众平台
+    通用-web.通过标题切换窗口
+
+创建固定日期储值卡
+    [Arguments]    ${保存并上架}=
+    ${random}    Generate Random String    5    [NUMBERS]
+    ${名称}    Set Variable    储值卡${random}
+    商户管理后台-主菜单.点击老客营销
+    老客营销-菜单.点击电子卡管理
+    电子卡管理-储值卡.点击储值卡管理
+    电子卡管理-储值卡.点击制作储值卡
+    电子卡管理-储值卡.选择背景颜色    5
+    电子卡管理-储值卡.上传封面图    timg3.jpg
+    电子卡管理-储值卡.输入储值卡名称    ${名称}
+    电子卡管理-储值卡.输入金额    100
+    电子卡管理-储值卡.输入售价    0.01
+    电子卡管理-储值卡.输入上架数量    100
+    电子卡管理-储值卡.选择固定日期区间
+    电子卡管理-储值卡.输入限购次数    10
+    电子卡管理-储值卡.输入使用提醒    请在结算时出示给收银员
+    电子卡管理-储值卡.输入使用说明    满10元可用
+    电子卡管理-储值卡.输入客服电话    0755-8989889
+    电子卡管理-储值卡.上传描述图片    center.jpg
+    电子卡管理-储值卡.输入描述文字    sadasddaseqehjghnvx435345345
+    电子卡管理-储值卡.选择全部门店
+    Run Keyword If    '${保存并上架}'==''    电子卡管理-储值卡.点击保存并上架
+    Run Keyword If    '${保存并上架}'!=''    电子卡管理-储值卡.点击仅保存
+    [Return]    ${名称}
+
+强制删除
+    [Arguments]    ${名称}
+    [Documentation]    未下架的会员卡会先下架再删除
+    #先下架
+    ${row_table}    表格.翻页查找数据    ${table_储值卡}    ${名称}    1
+    ${状态}    表格.通过已知列数据查找其他列数据    ${table_储值卡}    ${名称}    1    7
+    Run Keyword If    '${状态}'=='已上架'    电子卡管理-储值卡.下架    ${名称}
+    #再删除
+    电子卡管理-储值卡.删除    ${名称}
+
+创建固定时长的储值卡
+    [Arguments]    ${保存并上架}=
+    ${random}    Generate Random String    5    [NUMBERS]
+    ${名称}    Set Variable    储值卡${random}
+    商户管理后台-主菜单.点击老客营销
+    老客营销-菜单.点击电子卡管理
+    电子卡管理-储值卡.点击储值卡管理
+    电子卡管理-储值卡.点击制作储值卡
+    电子卡管理-储值卡.选择背景颜色    5
+    电子卡管理-储值卡.上传封面图    6D39.png
+    电子卡管理-储值卡.输入储值卡名称    ${名称}
+    电子卡管理-储值卡.输入金额    100
+    电子卡管理-储值卡.输入售价    0.01
+    电子卡管理-储值卡.输入上架数量    100
+    电子卡管理-储值卡.选择固定时长    \    10
+    电子卡管理-储值卡.输入限购次数    10
+    电子卡管理-储值卡.输入使用提醒    请在结算时出示给收银员
+    电子卡管理-储值卡.输入使用说明    满10元可用
+    电子卡管理-储值卡.输入客服电话    0755-8989889
+    电子卡管理-储值卡.上传描述图片    timg3.jpg
+    电子卡管理-储值卡.输入描述文字    dffsfd hhffdfsrwezxfgdsaedwef
+    电子卡管理-储值卡.选择全部门店
+    Run Keyword If    '${保存并上架}'==''    电子卡管理-储值卡.点击保存并上架
+    Run Keyword If    '${保存并上架}'!=''    电子卡管理-储值卡.点击仅保存
+    [Return]    ${名称}
+
+验证储值卡可更改输入项
+    商户管理后台-主菜单.点击老客营销
+    老客营销-菜单.点击电子卡管理
+    电子卡管理-会员卡.点击会员卡管理
+    电子卡管理-储值卡.点击储值卡管理
+    电子卡管理-储值卡.编辑    ${G_储值卡}
+    通用-web.长等待元素显示    xpath=//input[@id='price']
+    电子卡管理-储值卡.验证输入框可修改项    xpath=//input[@id='price']
+    通用-web.长等待元素显示    xpath=//input[@name='skuQuantity']
+    电子卡管理-储值卡.验证输入框可修改项    xpath=//input[@name='skuQuantity']
+    通用-web.长等待元素显示    xpath=//input[@name='getLimit']
+    电子卡管理-储值卡.验证输入框可修改项    xpath=//input[@name='getLimit']
+    通用-web.长等待元素显示    xpath=//input[@name='notice']
+    电子卡管理-储值卡.验证输入框可修改项    xpath=//input[@name='notice']
+    通用-web.长等待元素显示    xpath=//textarea[@name='description']
+    电子卡管理-储值卡.验证输入框可修改项    xpath=//textarea[@name='description']
+
+验证输入框可修改项
+    [Arguments]    ${xpath}
+    Selenium2Library.Page Should not Contain Element    ${xpath}[@readonly='readonly']
+
+验证储值卡不可修改项
+    [Arguments]    ${xpath}
+    Selenium2Library.Page Should Contain Element    ${xpath}[@readonly='readonly']
+
+验证储值卡不可修改项2
+    [Arguments]    ${xpath}
+    Selenium2Library.Page Should Contain Element    ${xpath}[@disabled='disabled']
+
+验证储值卡不可修改输入项
+    商户管理后台-主菜单.点击老客营销
+    老客营销-菜单.点击电子卡管理
+    电子卡管理-会员卡.点击会员卡管理
+    电子卡管理-储值卡.点击储值卡管理
+    电子卡管理-储值卡.编辑    ${G_储值卡}
+    通用-web.长等待元素显示    xpath=//input[@id='member']
+    电子卡管理-储值卡.验证储值卡不可修改项2    xpath=//input[@id=''member]
+    通用-web.长等待元素显示    xpath=//input[@id='balance']
+    电子卡管理-储值卡.验证储值卡不可修改项    xpath=//input[@id='balance']

@@ -1,0 +1,136 @@
+*** Settings ***
+Resource          0-商户管理后台-http.txt
+
+*** Keywords ***
+减少余额
+    [Arguments]    ${mobile}    ${balance}    ${balanceChange}    ${superPass}=${G_商户密码}    ${setValidTime}=false
+    ${member_id}    卡券-通过手机号和商户id查找用户信息    ${mobile}    ${G_商户id}    member_id
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员信息    index_customer_customerInfo_balance-modify_dec
+    加载商户后台公共请求部分
+    修改Url携带的参数    id    ${member_id}
+    修改Url携带的参数    balance    ${balance}
+    修改Url携带的参数    balanceChange    ${balanceChange}
+    修改Url携带的参数    superPass    ${superPass}
+    修改Url携带的参数    setValidTime    ${setValidTime}
+    发送请求
+    sleep    2s
+
+减少积分
+    [Arguments]    ${mobile}    ${bonus}    ${availableBonus}    ${bonusChange}    ${superPass}=${G_商户密码}    ${setValidTime}=false
+    ${member_id}    卡券-通过手机号和商户id查找用户信息    ${mobile}    ${G_商户id}    member_id
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员信息    index_customer_customerInfo_bonus-modify_dec
+    加载商户后台公共请求部分
+    修改Url携带的参数    id    ${member_id}
+    修改Url携带的参数    bonus    ${bonus}
+    修改Url携带的参数    availableBonus    ${availableBonus}
+    修改Url携带的参数    bonusChange    ${bonusChange}
+    修改Url携带的参数    superPass    ${superPass}
+    修改Url携带的参数    setValidTime    ${setValidTime}
+    发送请求
+    sleep    2s
+
+增加余额
+    [Arguments]    ${mobile}    ${balance}    ${balanceChange}    ${superPass}=${G_商户密码}    ${setValidTime}=false
+    ${member_id}    卡券-通过手机号和商户id查找用户信息    ${mobile}    ${G_商户id}    member_id
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员信息    index_customer_customerInfo_balance-modify_inc
+    加载商户后台公共请求部分
+    修改Url携带的参数    id    ${member_id}
+    修改Url携带的参数    balance    ${balance}
+    修改Url携带的参数    balanceChange    ${balanceChange}
+    修改Url携带的参数    superPass    ${superPass}
+    修改Url携带的参数    setValidTime    ${setValidTime}
+    发送请求
+    sleep    2s
+
+增加积分
+    [Arguments]    ${mobile}    ${bonus}    ${availableBonus}    ${bonusChange}    ${superPass}=${G_商户密码}    ${setValidTime}=false
+    ${member_id}    卡券-通过手机号和商户id查找用户信息    ${mobile}    ${G_商户id}    member_id
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员信息    index_customer_customerInfo_bonus-modify_inc
+    加载商户后台公共请求部分
+    修改Url携带的参数    id    ${member_id}
+    修改Url携带的参数    bonus    ${bonus}
+    修改Url携带的参数    availableBonus    ${availableBonus}
+    修改Url携带的参数    bonusChange    ${bonusChange}
+    修改Url携带的参数    setValidTime    ${setValidTime}
+    发送请求
+    sleep    2s
+
+通过手机号获取用户账户信息
+    [Arguments]    ${mobile}    ${para}
+    [Documentation]    para：性别-sex、会员来源-channel、会员等级-levelName、储值账户余额-balance、累计充值金额-customerAmountRecharge、剩余积分-bonus、累计获得积分-sumBonusRecharge、
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员信息    index_get_customer_list
+    加载商户后台公共请求部分
+    修改Url携带的参数    phoneNumber    ${mobile}
+    发送请求
+    # 获取某个信息
+    ${ret_value}    Get Json Value By Path    /aaData/0/${para}
+    [Return]    ${ret_value}
+
+获取余额变动记录
+    [Arguments]    ${mobile}
+    ${memberId}    卡券-通过手机号和商户id查找内存id    ${mobile}
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员信息    index_customer_member_balance_change_record
+    加载商户后台公共请求部分
+    修改Url携带的参数    memberId    ${memberId}
+    发送请求
+
+获取余额变动记录-验证一条记录
+    [Arguments]    ${行号}    ${变动账户}    ${变动形式}    ${变动金额}    ${剩余金额}    ${门店}=-
+    ...    ${操作员}=-
+    ${tbody}    Get Table From Html    ${G_RESPONSE_BODY}    0
+    Verify Tbody    ${tbody}    ${行号}    -    ${变动账户}    ${变动形式}    ${变动金额}
+    ...    ${剩余金额}    ${门店}    ${操作员}
+
+获取积分变动记录
+    [Arguments]    ${mobile}
+    ${memberId}    卡券-通过手机号和商户id查找内存id    ${mobile}
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员信息    index_customer_member_stat_inte
+    加载商户后台公共请求部分
+    修改Url携带的参数    memberId    ${memberId}
+    发送请求
+
+获取积分变动记录-验证一条记录
+    [Arguments]    ${行号}    ${变动形式}    ${变动积分}    ${剩余积分}    ${门店}=-    ${操作员}=-
+    ${tbody}    Get Table From Html    ${G_RESPONSE_BODY}    0
+    Verify Tbody    ${tbody}    ${行号}    -    ${变动形式}    ${变动积分}    ${剩余积分}
+    ...    ${门店}    ${操作员}
+
+获取会员明细
+    [Arguments]    ${mobile}
+    ${memberId}    卡券-通过手机号和商户id查找内存id    ${mobile}
+    创建http上下文    ${G_SHOP_HOST_TEST}
+    通用-http.加载接口模板    SHOP_会员信息    index_customer_detail
+    加载商户后台公共请求部分
+    修改Url携带的参数    memberId    ${memberId}
+    发送请求
+
+获取会员明细-获取账户信息
+    [Arguments]    ${name}
+    [Documentation]    name:总余额、储值账户_储值卡、剩余积分、可用积分、冻结积分、累计消费金额、累计消费积分、累计充值金额、累计获得积分
+    ${tbody}    Get Table From Html    ${G_RESPONSE_BODY}    0
+    ${总余额}    Get Table Value By Xpath    ${tbody}    tr[1]/td[2]/b
+    ${储值账户_储值卡}    Get Table Value By Xpath    ${tbody}    tr[1]/td[2]/span[2]
+    ${剩余积分}    Get Table Value By Xpath    ${tbody}    tr[1]/td[4]/b
+    ${可用积分_冻结积分}    Get Table Value By Xpath    ${tbody}    tr[1]/td[4]/span[2]
+    ${可用积分}    ${冻结积分}    Split String    ${可用积分_冻结积分}    ${SPACE}    1
+    ${累计消费金额}    Get Table Value By Xpath    ${tbody}    tr[2]/td[2]/b
+    ${累计消费积分}    Get Table Value By Xpath    ${tbody}    tr[2]/td[4]/b
+    ${累计充值金额}    Get Table Value By Xpath    ${tbody}    tr[3]/td[2]/b
+    ${累计获得积分}    Get Table Value By Xpath    ${tbody}    tr[3]/td[4]/b
+    [Return]    ${${name}}
+
+获取会员明细-获取会员信息
+    ${tbody}    Get Table From Html    ${G_RESPONSE_BODY}    1
+
+获取会员明细-获取微信信息
+    ${tbody}    Get Table From Html    ${G_RESPONSE_BODY}    2
+
+获取会员明细-获取支付宝信息
+    ${tbody}    Get Table From Html    ${G_RESPONSE_BODY}    3

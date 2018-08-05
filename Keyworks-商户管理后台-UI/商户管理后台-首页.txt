@@ -1,0 +1,20 @@
+*** Settings ***
+Resource          0-商户管理后台-UI.txt
+
+*** Keywords ***
+输入账户名
+    [Arguments]    ${username}
+    通用-web.长等待输入文本    id=username    ${username}
+
+输入密码
+    [Arguments]    ${password}
+    通用-web.长等待输入文本    id=password    ${password}
+
+点击登录按钮
+    通用-web.长等待点击按钮    id=loginBtn
+
+登录
+    [Arguments]    ${username}=${G_商户账号}    ${password}=${G_商户密码}
+    商户管理后台-首页.输入账户名    ${username}
+    商户管理后台-首页.输入密码    ${password}
+    商户管理后台-首页.点击登录按钮
